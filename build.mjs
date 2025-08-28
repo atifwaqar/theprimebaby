@@ -34,12 +34,17 @@ async function copyAssets() {
 
 function preprocessLiquid(src) {
   return src
+    // Shopify block tags → plain HTML
     .replace(/{%[-\s]*style[-\s]*%}/g, "<style>")
     .replace(/{%[-\s]*endstyle[-\s]*%}/g, "</style>")
+    .replace(/{%[-\s]*stylesheet[-\s]*%}/g, "<style>")
+    .replace(/{%[-\s]*endstylesheet[-\s]*%}/g, "</style>")
     .replace(/{%[-\s]*javascript[-\s]*%}/g, "<script>")
     .replace(/{%[-\s]*endjavascript[-\s]*%}/g, "</script>")
+    // Shopify form → inert form
     .replace(/{%[-\s]*form\b[^%]*%}/g, '<form data-shopify-form="stub">')
     .replace(/{%[-\s]*endform[-\s]*%}/g, "</form>")
+    // Remove editor schema blocks
     .replace(/{%[-\s]*schema[-\s]*%}[\s\S]*?{%[-\s]*endschema[-\s]*%}/g, "");
 }
 
@@ -79,12 +84,8 @@ function candidatePaths(filepath, ext) {
     const fname = withExt.split("/").pop();
     paths.push(path.join("templates", "snippets", "icons", fname));
   }
-  if (isSection) {
-    paths.push(path.join("templates", withExt));
-  }
-  if (isLayout) {
-    paths.push(path.join("templates", withExt));
-  }
+  if (isSection) paths.push(path.join("templates", withExt));
+  if (isLayout)  paths.push(path.join("templates", withExt));
 
   // Generic fallback
   paths.push(path.join("templates", withExt));
@@ -101,10 +102,7 @@ const engine = new Liquid({
   fs: {
     exists: async (filepath) => {
       for (const candidate of candidatePaths(filepath, ".liquid")) {
-        try {
-          await fs.access(path.join(THEME_DIR, candidate));
-          return true;
-        } catch {}
+        try { await fs.access(path.join(THEME_DIR, candidate)); return true; } catch {}
       }
       return false;
     },
@@ -117,17 +115,11 @@ const engine = new Liquid({
         } catch {}
       }
       // Stub fallback
-      const stubKey = candidatePaths(filepath, ".liquid").find(
-        (p) => STUB_SNIPPETS[p]
-      );
+      const stubKey = candidatePaths(filepath, ".liquid").find(p => STUB_SNIPPETS[p]);
       if (stubKey) return STUB_SNIPPETS[stubKey];
       throw new Error(
-        `ENOENT: Failed to lookup "${filepath}". Tried:\n${candidatePaths(
-          filepath,
-          ".liquid"
-        )
-          .map((p) => "  - " + p)
-          .join("\n")}`
+        `ENOENT: Failed to lookup "${filepath}". Tried:\n` +
+        candidatePaths(filepath, ".liquid").map(p => `  - ${p}`).join("\n")
       );
     },
     resolve: (root, file, ext) => {
@@ -141,90 +133,50 @@ const engine = new Liquid({
 engine.registerFilter("asset_url", (f = "") =>
   `assets/${String(f).replace(/^['"]|['"]$/g, "")}`
 );
-engine.registerFilter(
-  "stylesheet_tag",
-  (h = "") => `<link rel="stylesheet" href="${h}">`
-);
+engine.registerFilter("stylesheet_tag", (h = "") => `<link rel="stylesheet" href="${h}">`);
 engine.registerFilter("script_tag", (s = "") => `<script src="${s}"></script>`);
-const img = (s = "") =>
-  /^https?:\/\//i.test(s)
-    ? s
-    : s.startsWith("assets/")
-    ? s
-    : `assets/${s}`;
+const img = (s = "") => /^https?:\/\//i.test(s) ? s : (s.startsWith("assets/") ? s : `assets/${s}`);
 engine.registerFilter("image_url", img);
 engine.registerFilter("img_url", img);
 const money = (c, fmt = "${{amount}}") => {
   const v = (Number(c) || 0) / 100;
-  return fmt
-    .replace("{{amount}}", v.toFixed(2))
-    .replace("{{ amount }}", v.toFixed(2));
+  return fmt.replace("{{amount}}", v.toFixed(2)).replace("{{ amount }}", v.toFixed(2));
 };
 engine.registerFilter("money", (c) => money(c));
 
 let locale = {};
 try {
-  locale = JSON.parse(
-    await fs.readFile(path.join(THEME_DIR, "locales/en.default.json"), "utf8")
-  );
+  locale = JSON.parse(await fs.readFile(path.join(THEME_DIR, "locales/en.default.json"), "utf8"));
 } catch {}
 engine.registerFilter("t", (k = "") => locale[String(k)] || String(k));
 
 // -----------------------------
 // Data
 // -----------------------------
-const settings = JSON.parse(
-  await fs.readFile(path.join(DATA_DIR, "settings.json"), "utf8")
-);
-const products = JSON.parse(
-  await fs.readFile(path.join(DATA_DIR, "products.json"), "utf8")
-);
-const collections = JSON.parse(
-  await fs.readFile(path.join(DATA_DIR, "collections.json"), "utf8")
-);
+const settings = JSON.parse(await fs.readFile(path.join(DATA_DIR, "settings.json"), "utf8"));
+const products = JSON.parse(await fs.readFile(path.join(DATA_DIR, "products.json"), "utf8"));
+const collections = JSON.parse(await fs.readFile(path.join(DATA_DIR, "collections.json"), "utf8"));
 
 function adaptProduct(p) {
   const price = Number(p.price ?? 0);
   const cap = Number(p.compare_at_price ?? 0);
-  const v = {
-    id: p.variants?.[0]?.id || `${p.handle}-v1`,
-    title: p.variants?.[0]?.title || "Default",
-    price,
-    compare_at_price: cap
-  };
+  const v = { id: p.variants?.[0]?.id || `${p.handle}-v1`, title: p.variants?.[0]?.title || "Default", price, compare_at_price: cap };
   return {
-    handle: p.handle,
-    title: p.title,
-    url: `/products/${p.handle}`,
+    handle: p.handle, title: p.title, url: `/products/${p.handle}`,
     featured_image: p.featured_image || p.image || "",
-    price,
-    compare_at_price: cap,
-    variants: p.variants || [v],
-    selected_or_first_available_variant: v,
-    available: true,
-    images: p.images || [p.featured_image || p.image].filter(Boolean),
-    media: [],
-    vendor: p.vendor || "",
-    tags: p.tags || []
+    price, compare_at_price: cap,
+    variants: p.variants || [v], selected_or_first_available_variant: v,
+    available: true, images: p.images || [p.featured_image || p.image].filter(Boolean),
+    media: [], vendor: p.vendor || "", tags: p.tags || []
   };
 }
-const all_products = Object.fromEntries(
-  products.map((p) => [p.handle, adaptProduct(p)])
-);
+const all_products = Object.fromEntries(products.map(p => [p.handle, adaptProduct(p)]));
 
 function normalizeBlocks(blocks) {
   if (!blocks) return [];
   if (Array.isArray(blocks))
-    return blocks.map((b) => ({
-      id: b.id || b.type,
-      type: b.type,
-      settings: b.settings || {}
-    }));
-  return Object.entries(blocks).map(([id, b]) => ({
-    id,
-    type: b?.type,
-    settings: (b && b.settings) || {}
-  }));
+    return blocks.map(b => ({ id: b.id || b.type, type: b.type, settings: b.settings || {} }));
+  return Object.entries(blocks).map(([id, b]) => ({ id, type: b?.type, settings: (b && b.settings) || {} }));
 }
 
 // -----------------------------
@@ -235,11 +187,7 @@ async function wrapWithLayout(content) {
     const layout = await readThemeFile("templates/layout/theme.liquid");
     return await engine.parseAndRender(layout, {
       content_for_layout: content,
-      shop: {
-        name: settings.shop_name,
-        description: settings.shop_description,
-        money_format: settings.money_format
-      },
+      shop: { name: settings.shop_name, description: settings.shop_description, money_format: settings.money_format },
       settings
     });
   } catch {
@@ -248,24 +196,18 @@ async function wrapWithLayout(content) {
 }
 
 async function buildIndex() {
+  // Try legacy index.liquid
   try {
     const raw = await readThemeFile("templates/index.liquid");
     const html = await engine.parseAndRender(raw, {
-      shop: {
-        name: settings.shop_name,
-        description: settings.shop_description,
-        money_format: settings.money_format
-      },
-      settings,
-      all_products,
-      routes: {},
-      cart: {}
+      shop: { name: settings.shop_name, description: settings.shop_description, money_format: settings.money_format },
+      settings, all_products, routes: {}, cart: {}
     });
     return await wrapWithLayout(html);
   } catch {}
-  const tpl = JSON.parse(
-    await fs.readFile(path.join(THEME_DIR, "templates/index.json"), "utf8")
-  );
+
+  // JSON template
+  const tpl = JSON.parse(await fs.readFile(path.join(THEME_DIR, "templates/index.json"), "utf8"));
   const order = tpl.order || tpl.sections_order || Object.keys(tpl.sections || {});
   let body = "";
   for (const id of order) {
@@ -273,21 +215,9 @@ async function buildIndex() {
     if (!sec?.type || sec.disabled === true) continue;
     const raw = await readThemeFile(`templates/sections/${sec.type}.liquid`);
     const shtml = await engine.parseAndRender(raw, {
-      shop: {
-        name: settings.shop_name,
-        description: settings.shop_description,
-        money_format: settings.money_format
-      },
-      settings,
-      all_products,
-      routes: {},
-      cart: {},
-      section: {
-        id,
-        type: sec.type,
-        settings: sec.settings || {},
-        blocks: normalizeBlocks(sec.blocks)
-      }
+      shop: { name: settings.shop_name, description: settings.shop_description, money_format: settings.money_format },
+      settings, all_products, routes: {}, cart: {},
+      section: { id, type: sec.type, settings: sec.settings || {}, blocks: normalizeBlocks(sec.blocks) }
     });
     body += shtml + "\n";
   }
