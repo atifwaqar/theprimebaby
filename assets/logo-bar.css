@@ -1,0 +1,74 @@
+.logo > .gradient {
+  border-bottom: 1px solid var(--color-base-border);
+}
+.logo-bar__item {
+  list-style: none;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 25px;
+}
+.logo .title-wrapper--no-top-margin {
+  border: 0;
+}
+.logo-bar__image {
+  max-width: 100%;
+  position: relative;
+  margin: 0 auto;
+  padding: 0;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+}
+.logo-bar__item:hover .logo-bar__image {
+  opacity: 0.7;
+}
+.logo-bar.owl-carousel.owl-loaded {
+  padding: 0;
+}
+.logo-bar .owl-item {
+  text-align: center;
+}
+.grid .logo-bar__item.grid__item {
+  width: calc(16.66% - var(--grid-desktop-horizontal-spacing) * 5 / 6);
+  max-width: calc(16.66% - var(--grid-desktop-horizontal-spacing) * 5 / 6);
+  padding: 26px;
+  border-radius: 5px;
+  background-color: var(--color-base-background-1);
+}
+.logo-bar-grid.grid {
+  text-align: center;
+}
+@media screen and (max-width: 1449px) {
+  .grid .logo-bar__item.grid__item {
+    width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+    max-width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5);
+  }
+}
+@media screen and (max-width: 1200px) {
+  .grid .logo-bar__item.grid__item {
+    width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+    max-width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4);
+  }
+}
+@media screen and (max-width: 989px) {
+  .grid .logo-bar__item.grid__item {
+    width: calc(25% - var(--grid-mobile-horizontal-spacing) * 3 / 4);
+    max-width: calc(25% - var(--grid-mobile-horizontal-spacing) * 3 / 4);
+  }
+}
+@media screen and (max-width: 767px) {
+  .grid .logo-bar__item.grid__item {
+    width: calc(33.33% - var(--grid-mobile-horizontal-spacing) * 2 / 3);
+    max-width: calc(33.33% - var(--grid-mobile-horizontal-spacing) * 2 / 3);
+  }
+}
+@media screen and (max-width: 575px) {
+  .grid .logo-bar__item.grid__item {
+    width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+    max-width: calc(50% - var(--grid-mobile-horizontal-spacing) / 2);
+  }
+}
+@media screen and (max-width: 380px) {
+  .grid .logo-bar__item.grid__item {
+    padding: 20px;
+  }
+}

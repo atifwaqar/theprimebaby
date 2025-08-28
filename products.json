@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sku-1001",
+    "title": "Sample Product A",
+    "price": 1999,
+    "currency": "PKR",
+    "image": "assets/placeholder.svg",
+    "url": "#"
+  },
+  {
+    "id": "sku-1002",
+    "title": "Sample Product B",
+    "price": 2999,
+    "currency": "PKR",
+    "image": "assets/placeholder.svg",
+    "url": "#"
+  },
+  {
+    "id": "sku-1003",
+    "title": "Sample Product C",
+    "price": 1499,
+    "currency": "PKR",
+    "image": "assets/placeholder.svg",
+    "url": "#"
+  }
+]
