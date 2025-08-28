@@ -1,0 +1,288 @@
+<link rel="stylesheet" href="{{ 'section-mobile-menu.css' | asset_url }}" media="print" onload="this.media='all'">
+
+{% if section.settings.show_mobile_menu %}
+  <div
+    class="menu-block page-inner-width color-{{ section.settings.color_scheme }} gradient"
+    data-section-id="{{ section.id }}"
+    data-section-type="menu-section"
+  >
+    <div class="page-width">
+      <div class="footer-mobile">
+        {% if section.settings.show_mobile_home %}
+          <div class="header__icon site-header__icon">
+            <div class="home-icon">
+              <a href="/" aria-label="link">
+                Home
+                {% render 'footer-icon-home' %}
+              </a>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_mobile_account %}
+          <div class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+            <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{% endif %}">
+              Account
+              {%- render 'footer-icon-account' -%}
+            </a>
+            <span class="visually-hidden">
+              {%- liquid
+                if customer
+                  echo 'customer.account_fallback' | t
+                else
+                  echo 'customer.log_in' | t
+                endif
+              -%}
+            </span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_mobile_collections %}
+          <div class="header__icon site-header__icon">
+            <div class="collection-icon">
+              <a href="/collections" aria-label="link">
+                Collection
+                {% render 'footer-icon-shop' %}
+              </a>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_mobile_search %}
+          <details-modal class="header__search">
+            <details>
+              <summary
+                class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle"
+                aria-haspopup="dialog"
+                aria-label="{{ 'general.search.search' | t }}"
+              >
+                <span>
+                  Search
+                  <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false">
+                    <use href="#icon-search">
+                  </svg>
+                  <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false">
+                    <use href="#icon-close">
+                  </svg>
+                </span>
+              </summary>
+              <div
+                class="search-modal modal__content gradient"
+                role="dialog"
+                aria-modal="true"
+                aria-label="{{ 'general.search.search' | t }}"
+              >
+                <div class="search-popup-wrap">
+                  <div class="modal-overlay"></div>
+                  <div
+                    class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}"
+                    tabindex="-1"
+                  >
+                    <div class="search-popup-inner">
+                      <h4 class="search-label">{{ 'general.search.search_text' | t }}</h4>
+                      {%- if settings.predictive_search_enabled -%}
+                        <predictive-search
+                          class="search-modal__form"
+                          data-loading-text="{{ 'accessibility.loading' | t }}"
+                        >
+                      {%- else -%}
+                        <search-form class="search-modal__form">
+                      {%- endif -%}
+                      <form
+                        action="{{ routes.search_url }}"
+                        method="get"
+                        role="search"
+                        class="search search-modal__form"
+                      >
+                        <div class="field">
+                          <input
+                            class="search__input field__input"
+                            id="Search-In-Modal-1"
+                            type="search"
+                            name="q"
+                            value="{{ search.terms | escape }}"
+                            placeholder="{{ 'general.search.search' | t }}"
+                            {%- if settings.predictive_search_enabled -%}
+                              role="combobox"
+                              aria-expanded="false"
+                              aria-owns="predictive-search-results"
+                              aria-controls="predictive-search-results"
+                              aria-haspopup="listbox"
+                              aria-autocomplete="list"
+                              autocorrect="off"
+                              autocomplete="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                            {%- endif -%}
+                          >
+                          <label class="field__label" for="Search-In-Modal-1">{{ 'general.search.search' | t }}</label>
+                          <input type="hidden" name="options[prefix]" value="last">
+                          <button
+                            type="reset"
+                            class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}"
+                            aria-label="{{ 'general.search.reset' | t }}"
+                          >
+                            <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                              <use xlink:href="#icon-reset">
+                            </svg>
+                          </button>
+                          <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                            <svg class="icon icon-search" aria-hidden="true" focusable="false">
+                              <use href="#icon-search">
+                            </svg>
+                          </button>
+                        </div>
+
+                        {%- if settings.predictive_search_enabled -%}
+                          <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                            <div class="predictive-search__loading-state">
+                              <svg
+                                aria-hidden="true"
+                                focusable="false"
+                                class="spinner"
+                                viewBox="0 0 66 66"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                              </svg>
+                            </div>
+                          </div>
+
+                          <span
+                            class="predictive-search-status visually-hidden"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        {%- endif -%}
+                      </form>
+                      {%- if settings.predictive_search_enabled -%}
+                        </predictive-search>
+                      {%- else -%}
+                        </search-form>
+                      {%- endif -%}
+                      <button
+                        type="button"
+                        class="modal__close-button link link--text focus-inset"
+                        aria-label="{{ 'accessibility.close' | t }}"
+                      >
+                        <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                          <use href="#icon-close">
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </details-modal>
+        {% endif %}
+
+        {% if section.settings.show_mobile_cart %}
+          <a
+            href="{{ routes.cart_url }}"
+            class="header__icon header__icon--cart link focus-inset"
+            id="footer-cart-icon"
+          >
+            cart
+            {%- liquid
+              if cart == empty
+                render 'icon-cart'
+              else
+                render 'icon-cart'
+              endif
+            -%}
+            <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+            {% comment %}
+              <div class="cart-count-bubble">
+                {%- if cart.item_count < 100 -%}
+                  <span aria-hidden="true">{{ cart.item_count }}</span>
+                {%- endif -%}
+                <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+              </div>
+            {% endcomment %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{%- if settings.cart_type == 'notification' -%}
+  {%- render 'cart-notification',
+    color_scheme: section.settings.color_scheme,
+    desktop_menu_type: section.settings.menu_type_desktop
+  -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.mobile-menu.name",
+  "tag": "section",
+  "class": "mobile-menu-section section",
+  "settings": [
+  {
+    "type": "checkbox",
+    "id": "show_mobile_menu",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_menu.label"
+  },
+  {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-2",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+    "type": "checkbox",
+    "id": "show_mobile_search",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_search.label"
+  },
+    {
+    "type": "checkbox",
+    "id": "show_mobile_account",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_account.label"
+  },
+     {
+    "type": "checkbox",
+    "id": "show_mobile_home",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_home.label"
+  },
+    {
+    "type": "checkbox",
+    "id": "show_mobile_collections",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_collections.label"
+  },
+    {
+    "type": "checkbox",
+    "id": "show_mobile_cart",
+    "default": false,
+    "label": "t:sections.mobile-menu.settings.show_mobile_cart.label"
+  }
+  ]
+}
+{% endschema %}
