@@ -4,18 +4,18 @@
     "title": "Prime Bottle 250ml",
     "price": 1999,
     "compare_at_price": 2499,
-    "featured_image": "https://placehold.co/600x600?text=Bottle"
+    "featured_image": "https://placehold.co/800x800?text=Bottle"
   },
   {
     "handle": "pacifier-pro",
     "title": "Pacifier Pro (2-pack)",
     "price": 999,
-    "featured_image": "https://placehold.co/600x600?text=Pacifier"
+    "featured_image": "https://placehold.co/800x800?text=Pacifier"
   },
   {
     "handle": "cozy-blanket",
     "title": "Cozy Blanket",
     "price": 2499,
-    "featured_image": "https://placehold.co/600x600?text=Blanket"
+    "featured_image": "https://placehold.co/800x800?text=Blanket"
   }
 ]
