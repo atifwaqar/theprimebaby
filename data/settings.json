@@ -1,0 +1,15 @@
+{
+  "shop_name": "The Prime Baby",
+  "shop_description": "A static demo rendered in the browser with LiquidJS.",
+  "money_format": "${{amount}}",
+  "collections": {
+    "frontpage": {
+      "title": "Featured",
+      "products": [
+        "prime-bottle",
+        "pacifier-pro",
+        "cozy-blanket"
+      ]
+    }
+  }
+}

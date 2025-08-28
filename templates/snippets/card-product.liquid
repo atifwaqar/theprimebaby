@@ -1,0 +1,19 @@
+<article class="card" style="border:1px solid #eee;border-radius:12px;overflow:hidden;">
+  <div style="aspect-ratio:1/1;background:#f6f7f9;display:flex;align-items:center;justify-content:center;">
+    {% if product.featured_image %}
+      <img src="{{ product.featured_image }}" alt="{{ product.title | escape }}" style="max-width:100%;max-height:100%;" />
+    {% else %}
+      <span style="opacity:.6;">No image</span>
+    {% endif %}
+  </div>
+  <div style="padding:12px;">
+    <h3 style="margin:0 0 6px 0;font-size:16px;line-height:1.3;">{{ product.title }}</h3>
+    <div style="font-weight:600;margin-bottom:8px;">
+      {% assign price = product.price | divided_by: 100.0 %}
+      {{ price | format: money_format }}
+    </div>
+    <button disabled style="width:100%;padding:10px;border:0;border-radius:10px;background:#ddd;cursor:not-allowed;">
+      Add to cart (stub)
+    </button>
+  </div>
+</article>
