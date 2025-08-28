@@ -1,0 +1,65 @@
+.services {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 60px;
+  gap: 60px;
+}
+.service {
+  display: flex;
+  text-decoration: none;
+  position: relative;
+}
+.service::after {
+  content: "";
+  width: 1px;
+  height: 50px;
+  background-color: var(--color-base-border);
+  position: absolute;
+  right: -20%;
+  left: auto;
+}
+.service.service-4::after {
+  display: none;
+}
+.service-icon {
+  display: inline-block !important;
+  height: 62px;
+  width: 60px;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center -85px;
+  margin-right: 20px;
+  -webkit-transition: all 0.5s ease 0s;
+  -moz-transition: all 0.5s ease 0s;
+  -o-transition: all 0.5s ease 0s;
+  transition: all 0.5s ease 0s;
+}
+.service:hover .service-icon {
+  background-position: center 5px;;
+}
+.service-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-base-accent-2);
+}
+.service-subtitle {
+  color: var(--color-base-text);
+}
+@media screen and (max-width: 1429px) {
+  .service::after {
+    right: -11%;
+  }
+  .services {
+	padding: 0 30px;
+  }
+}
+@media screen and (max-width: 1269px) {
+  .service::after {
+    display: none;
+  }
+}
+@media screen and (max-width: 749px){
+  .services {
+	padding: 0 15px;
+  }
+}

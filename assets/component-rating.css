@@ -1,0 +1,66 @@
+.rating {
+  display: inline-block;
+  margin: 0;
+  line-height: initial;
+}
+
+.product .rating-star {
+  --letter-spacing: 0;
+  --font-size: 2;
+}
+
+.card-wrapper .rating-star {
+  --letter-spacing: 0;
+  --font-size: 1.7;
+}
+
+.rating-star {
+  --percent: calc(
+    (
+        var(--rating) / var(--rating-max) + var(--rating-decimal) *
+          var(--font-size) /
+          (var(--rating-max) * (var(--letter-spacing) + var(--font-size)))
+      ) * 100%
+  );
+  letter-spacing: calc(var(--letter-spacing) * 1rem);
+  font-size: calc(var(--font-size) * 1rem);
+  line-height: 1;
+  display: inline-block;
+  font-family: Times;
+  margin: 0;
+}
+
+.rating-star::before {
+  content: "★★★★★";
+  background: linear-gradient(
+    90deg,
+    var(--color-rating-filled) var(--percent),
+    var(--color-rating-empty) var(--percent)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.rating-star.empty::before {
+  content: "★★★★★";
+  background: var(--color-rating-empty);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--color-rating-empty);
+}
+.rating-text {
+  display: none;
+}
+
+.rating-count {
+  display: inline-block;
+  margin: 0;
+}
+
+@media (forced-colors: active) {
+  .rating {
+    display: none;
+  }
+
+  .rating-text {
+    display: block;
+  }
+}
