@@ -5,6 +5,19 @@ import fssync from "node:fs";
 import path from "node:path";
 import { glob } from "glob";
 
+// Minimal SVG fallbacks if a theme is missing certain icon snippets.
+const STUB_SNIPPETS = {
+  "templates/snippets/icon-pause.liquid": `
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+      <rect x="5" y="4" width="3" height="12"></rect>
+      <rect x="12" y="4" width="3" height="12"></rect>
+    </svg>`,
+  "templates/snippets/icon-play.liquid": `
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true">
+      <polygon points="6,4 16,10 6,16"></polygon>
+    </svg>`
+};
+
 const THEME_DIR = path.resolve("theme");
 const OUT_DIR = path.resolve("dist");
 const DATA_DIR = path.resolve("data");
