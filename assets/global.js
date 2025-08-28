@@ -1,9 +1,7 @@
-// NOTE: jQuery-like calls disabled. Reimplement in vanilla if needed.
-// NOTE: Shopify runtime calls disabled for static build.
 // product countdown
 function countDownIni(countdown) {
-// TODO: disabled line (Shopify/jQuery-dependent):   $(countdown).each(function () {
-// TODO: disabled line (Shopify/jQuery-dependent):     var countdown = $(this);
+  $(countdown).each(function () {
+    var countdown = $(this);
     var promoperiod;
     if (countdown.attr("data-promoperiod")) {
       promoperiod =
@@ -12,8 +10,8 @@ function countDownIni(countdown) {
       promoperiod = countdown.attr("data-countdown");
     }
     if (Date.parse(promoperiod) - Date.parse(new Date()) > 0) {
-// TODO: disabled line (Shopify/jQuery-dependent):       $(this).addClass("countdown-block");
-// TODO: disabled line (Shopify/jQuery-dependent):       $(this).countdown(promoperiod, function (event) {
+      $(this).addClass("countdown-block");
+      $(this).countdown(promoperiod, function (event) {
         // countdown.html(event.strftime('%-w weeks %-d days %Hh %Mm %Ss'));
         countdown.html(
           event.strftime(
@@ -60,63 +58,63 @@ function horizontalScroll() {
     }
   });
 }
-// TODO: disabled line (Shopify/jQuery-dependent): $(document).ready(function () {
+$(document).ready(function () {
   horizontalScroll();
 });
-// TODO: disabled line (Shopify/jQuery-dependent): $(window).resize(function () {
+$(window).resize(function () {
   horizontalScroll();
 });
 
 // grid-list
-// TODO: disabled line (Shopify/jQuery-dependent): $(document).ready(function () {
-// TODO: disabled line (Shopify/jQuery-dependent):   $(".btn-group").each(function () {
+$(document).ready(function () {
+  $(".btn-group").each(function () {
     var active,
       content,
-// TODO: disabled line (Shopify/jQuery-dependent):       links = $(this).find("a");
+      links = $(this).find("a");
     active = links.first().addClass("active");
-// TODO: disabled line (Shopify/jQuery-dependent):     content = $(active.attr("href"));
+    content = $(active.attr("href"));
     links.not(":first").each(function () {
-// TODO: disabled line (Shopify/jQuery-dependent):       $($(this).attr("href")).hide();
+      $($(this).attr("href")).hide();
     });
-// TODO: disabled line (Shopify/jQuery-dependent):     $(this)
+    $(this)
       .find("a")
       .click(function (e) {
         active.removeClass("active");
         content.hide();
-// TODO: disabled line (Shopify/jQuery-dependent):         active = $(this);
-// TODO: disabled line (Shopify/jQuery-dependent):         content = $($(this).attr("href"));
+        active = $(this);
+        content = $($(this).attr("href"));
         active.addClass("active");
         content.show();
         return false;
       });
   });
 });
-// TODO: disabled line (Shopify/jQuery-dependent): $(document).ready(function () {
-// TODO: disabled line (Shopify/jQuery-dependent):   $("#col_1").click(function (event) {
+$(document).ready(function () {
+  $("#col_1").click(function (event) {
     event.preventDefault();
-// TODO: disabled line (Shopify/jQuery-dependent):     $("#product-grid .grid__item").removeClass("");
-// TODO: disabled line (Shopify/jQuery-dependent):     $("#product-grid .grid__item").addClass("list-group-item");
+    $("#product-grid .grid__item").removeClass("");
+    $("#product-grid .grid__item").addClass("list-group-item");
   });
-// TODO: disabled line (Shopify/jQuery-dependent):   $("#col_2").click(function (event) {
+  $("#col_2").click(function (event) {
     event.preventDefault();
-// TODO: disabled line (Shopify/jQuery-dependent):     $("#product-grid .grid__item").removeClass("list-group-item");
-// TODO: disabled line (Shopify/jQuery-dependent):     $("#product-grid .grid__item").addClass("");
+    $("#product-grid .grid__item").removeClass("list-group-item");
+    $("#product-grid .grid__item").addClass("");
   });
 });
 
-// TODO: disabled line (Shopify/jQuery-dependent): $(".ttloader").addClass("hide-loader");
+$(".ttloader").addClass("hide-loader");
 
-// TODO: disabled line (Shopify/jQuery-dependent): $(window).scroll(function () {
-// TODO: disabled line (Shopify/jQuery-dependent):   if ($(this).scrollTop() > 500) {
-// TODO: disabled line (Shopify/jQuery-dependent):     $(".top_button").fadeIn(500);
+$(window).scroll(function () {
+  if ($(this).scrollTop() > 500) {
+    $(".top_button").fadeIn(500);
   } else {
-// TODO: disabled line (Shopify/jQuery-dependent):     $(".top_button").fadeOut(500);
+    $(".top_button").fadeOut(500);
   }
 });
 
-// TODO: disabled line (Shopify/jQuery-dependent): $(".top_button").click(function (event) {
+$(".top_button").click(function (event) {
   event.preventDefault();
-// TODO: disabled line (Shopify/jQuery-dependent):   $("html, body").animate(
+  $("html, body").animate(
     {
       scrollTop: 0,
     },
@@ -373,20 +371,20 @@ function fetchConfig(type = "json") {
 }
 
 /*
-// TODO: disabled line (Shopify/jQuery-dependent):  * Shopify Common JS
+ * Shopify Common JS
  *
  */
-// TODO: disabled line (Shopify/jQuery-dependent): if (typeof window.Shopify == "undefined") {
-// TODO: disabled line (Shopify/jQuery-dependent):   window.Shopify = {};
+if (typeof window.Shopify == "undefined") {
+  window.Shopify = {};
 }
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.bind = function (fn, scope) {
+Shopify.bind = function (fn, scope) {
   return function () {
     return fn.apply(scope, arguments);
   };
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.setSelectorByValue = function (selector, value) {
+Shopify.setSelectorByValue = function (selector, value) {
   for (var i = 0, count = selector.options.length; i < count; i++) {
     var option = selector.options[i];
     if (value == option.value || value == option.innerHTML) {
@@ -396,13 +394,13 @@ function fetchConfig(type = "json") {
   }
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.addListener = function (target, eventName, callback) {
+Shopify.addListener = function (target, eventName, callback) {
   target.addEventListener
     ? target.addEventListener(eventName, callback, false)
     : target.attachEvent("on" + eventName, callback);
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.postLink = function (path, options) {
+Shopify.postLink = function (path, options) {
   options = options || {};
   var method = options["method"] || "post";
   var params = options["parameters"] || {};
@@ -423,7 +421,7 @@ function fetchConfig(type = "json") {
   document.body.removeChild(form);
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.CountryProvinceSelector = function (
+Shopify.CountryProvinceSelector = function (
   country_domid,
   province_domid,
   options
@@ -434,27 +432,27 @@ function fetchConfig(type = "json") {
     options["hideElement"] || province_domid
   );
 
-// TODO: disabled line (Shopify/jQuery-dependent):   Shopify.addListener(
+  Shopify.addListener(
     this.countryEl,
     "change",
-// TODO: disabled line (Shopify/jQuery-dependent):     Shopify.bind(this.countryHandler, this)
+    Shopify.bind(this.countryHandler, this)
   );
 
   this.initCountry();
   this.initProvince();
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): Shopify.CountryProvinceSelector.prototype = {
+Shopify.CountryProvinceSelector.prototype = {
   initCountry: function () {
     var value = this.countryEl.getAttribute("data-default");
-// TODO: disabled line (Shopify/jQuery-dependent):     Shopify.setSelectorByValue(this.countryEl, value);
+    Shopify.setSelectorByValue(this.countryEl, value);
     this.countryHandler();
   },
 
   initProvince: function () {
     var value = this.provinceEl.getAttribute("data-default");
     if (value && this.provinceEl.options.length > 0) {
-// TODO: disabled line (Shopify/jQuery-dependent):       Shopify.setSelectorByValue(this.provinceEl, value);
+      Shopify.setSelectorByValue(this.provinceEl, value);
     }
   },
 
@@ -859,7 +857,7 @@ class SliderComponent extends HTMLElement {
 
   update() {
     // Temporarily prevents unneeded updates resulting from variant changes
-// TODO: disabled line (Shopify/jQuery-dependent):     // This should be refactored as part of https://github.com/Shopify/dawn/issues/2057
+    // This should be refactored as part of https://github.com/Shopify/dawn/issues/2057
     if (!this.slider || !this.nextButton) return;
 
     const previousPage = this.currentPage;
@@ -1258,9 +1256,9 @@ class VariantSelects extends HTMLElement {
   }
   updateSKU() {
     if (this.currentVariant.sku) {
-// TODO: disabled line (Shopify/jQuery-dependent):       $(".js-variant-sku").html(this.currentVariant.sku);
+      $(".js-variant-sku").html(this.currentVariant.sku);
     } else {
-// TODO: disabled line (Shopify/jQuery-dependent):       $(".js-variant-sku").html("N/A");
+      $(".js-variant-sku").html("N/A");
     }
   }
 

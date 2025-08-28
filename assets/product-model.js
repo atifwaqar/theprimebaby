@@ -1,4 +1,3 @@
-// NOTE: Shopify runtime calls disabled for static build.
 if (!customElements.get('product-model')) {
   customElements.define('product-model', class ProductModel extends DeferredMedia {
     constructor() {
@@ -8,7 +7,7 @@ if (!customElements.get('product-model')) {
     loadContent() {
       super.loadContent();
 
-// TODO: disabled line (Shopify/jQuery-dependent):       Shopify.loadFeatures([
+      Shopify.loadFeatures([
         {
           name: 'model-viewer-ui',
           version: '1.0',
@@ -20,14 +19,14 @@ if (!customElements.get('product-model')) {
     setupModelViewerUI(errors) {
       if (errors) return;
 
-// TODO: disabled line (Shopify/jQuery-dependent):       this.modelViewerUI = new Shopify.ModelViewerUI(this.querySelector('model-viewer'));
+      this.modelViewerUI = new Shopify.ModelViewerUI(this.querySelector('model-viewer'));
     }
   });
 }
 
 window.ProductModel = {
   loadShopifyXR() {
-// TODO: disabled line (Shopify/jQuery-dependent):     Shopify.loadFeatures([
+    Shopify.loadFeatures([
       {
         name: 'shopify-xr',
         version: '1.0',

@@ -1,4 +1,3 @@
-// NOTE: Shopify runtime calls disabled for static build.
 if (!customElements.get('quick-add-modal')) {
   customElements.define('quick-add-modal', class QuickAddModal extends ModalDialog {
     constructor() {
@@ -29,8 +28,8 @@ if (!customElements.get('quick-add-modal')) {
           this.removeDOMElements();
           this.setInnerHTML(this.modalContent, this.productElement.innerHTML);
 
-// TODO: disabled line (Shopify/jQuery-dependent):           if (window.Shopify && Shopify.PaymentButton) {
-// TODO: disabled line (Shopify/jQuery-dependent):             Shopify.PaymentButton.init();
+          if (window.Shopify && Shopify.PaymentButton) {
+            Shopify.PaymentButton.init();
           }
 
           if (window.ProductModel) window.ProductModel.loadShopifyXR();

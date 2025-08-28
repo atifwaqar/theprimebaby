@@ -1,4 +1,3 @@
-// NOTE: Shopify runtime calls disabled for static build.
 const selectors = {
   customerAddresses: '[data-customer-addresses]',
   addressCountrySelect: '[data-address-country-select]',
@@ -34,15 +33,15 @@ class CustomerAddresses {
   }
 
   _setupCountries() {
-// TODO: disabled line (Shopify/jQuery-dependent):     if (Shopify && Shopify.CountryProvinceSelector) {
+    if (Shopify && Shopify.CountryProvinceSelector) {
       // eslint-disable-next-line no-new
-// TODO: disabled line (Shopify/jQuery-dependent):       new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+      new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
         hideElement: 'AddressProvinceContainerNew'
       });
       this.elements.countrySelects.forEach((select) => {
         const formId = select.dataset.formId;
         // eslint-disable-next-line no-new
-// TODO: disabled line (Shopify/jQuery-dependent):         new Shopify.CountryProvinceSelector(`AddressCountry_${formId}`, `AddressProvince_${formId}`, {
+        new Shopify.CountryProvinceSelector(`AddressCountry_${formId}`, `AddressProvince_${formId}`, {
           hideElement: `AddressProvinceContainer_${formId}`
         });
       });
@@ -83,7 +82,7 @@ class CustomerAddresses {
   _handleDeleteButtonClick = ({ currentTarget }) => {
     // eslint-disable-next-line no-alert
     if (confirm(currentTarget.getAttribute(attributes.confirmMessage))) {
-// TODO: disabled line (Shopify/jQuery-dependent):       Shopify.postLink(currentTarget.dataset.target, {
+      Shopify.postLink(currentTarget.dataset.target, {
         parameters: { _method: 'delete' },
       });
     }

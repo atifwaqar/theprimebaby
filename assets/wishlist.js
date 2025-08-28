@@ -1,5 +1,3 @@
-// NOTE: jQuery-like calls disabled. Reimplement in vanilla if needed.
-// NOTE: Shopify runtime calls disabled for static build.
 const LOCAL_STORAGE_WISHLIST_KEY = 'shopify-wishlist';
 const LOCAL_STORAGE_DELIMITER = ',';
 const BUTTON_ACTIVE_CLASS = 'active';
@@ -20,16 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('shopify-wishlist:updated', (event) => {
-// TODO: disabled line (Shopify/jQuery-dependent):   //console.log('[Shopify Wishlist] Wishlist Updated ✅', event.detail.wishlist);
+  //console.log('[Shopify Wishlist] Wishlist Updated ✅', event.detail.wishlist);
   initGrid();
 });
 
 document.addEventListener('shopify-wishlist:init-product-grid', (event) => {
-// TODO: disabled line (Shopify/jQuery-dependent):   //console.log('[Shopify Wishlist] Wishlist Product List Loaded ✅', event.detail.wishlist);
+  //console.log('[Shopify Wishlist] Wishlist Product List Loaded ✅', event.detail.wishlist);
 });
 
 document.addEventListener('shopify-wishlist:init-buttons', (event) => {
-// TODO: disabled line (Shopify/jQuery-dependent):   //console.log('[Shopify Wishlist] Wishlist Buttons Loaded ✅', event.detail.wishlist);
+  //console.log('[Shopify Wishlist] Wishlist Buttons Loaded ✅', event.detail.wishlist);
 });
 
 const fetchProductCardHTML = (handle) => {
@@ -43,7 +41,7 @@ const fetchProductCardHTML = (handle) => {
     const productCard = htmlDocument.documentElement.querySelector(selectors.productCard);
     return productCard.outerHTML;
   })
-// TODO: disabled line (Shopify/jQuery-dependent):   .catch((err) => console.error(`[Shopify Wishlist] Failed to load content for handle: ${handle}`, err));  
+  .catch((err) => console.error(`[Shopify Wishlist] Failed to load content for handle: ${handle}`, err));  
 };
 
 const setupGrid = async (grid) => {
@@ -65,7 +63,7 @@ const setupButtons = (buttons) => {
   buttons.forEach((button) => {
     const productHandle = button.dataset.productHandle || false;
     
-// TODO: disabled line (Shopify/jQuery-dependent):     if (!productHandle) return console.error('[Shopify Wishlist] Missing `data-product-handle` attribute. Failed to update the wishlist.');
+    if (!productHandle) return console.error('[Shopify Wishlist] Missing `data-product-handle` attribute. Failed to update the wishlist.');
     if (wishlistContains(productHandle)) button.classList.add(BUTTON_ACTIVE_CLASS);
 
     button.addEventListener('click', () => {
@@ -129,16 +127,16 @@ const resetWishlist = () => {
 
 const updateWishlistCount = () => {
     const wishlist = getWishlist();       
-// TODO: disabled line (Shopify/jQuery-dependent):     $('[data-js-wishlist-count]').attr('data-js-wishlist-count', wishlist.length).html(wishlist.length);
+    $('[data-js-wishlist-count]').attr('data-js-wishlist-count', wishlist.length).html(wishlist.length);
      
     if (wishlist.length==0){
-// TODO: disabled line (Shopify/jQuery-dependent):          $(".wish-info").css("display", "block");
+         $(".wish-info").css("display", "block");
     }
    else{
-// TODO: disabled line (Shopify/jQuery-dependent):       $(".wish-info").css("display", "none");
+      $(".wish-info").css("display", "none");
    }     
 };
 
-// TODO: disabled line (Shopify/jQuery-dependent): $(document).ready(function() {
+$(document).ready(function() {
   updateWishlistCount();
 })
