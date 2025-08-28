@@ -3,78 +3,53 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Shop</title>
-  <link rel="stylesheet" href="assets/shop.css">
-  <style>
-    .hero{ display:grid; grid-template-columns:1.2fr 1fr; gap:20px; align-items:center; }
-    .hero img{ width:100%; border-radius:12px; border:1px solid var(--border); }
-    .tiles{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .tile img{ width:100%; height:180px; object-fit:cover; border-radius:12px; border:1px solid var(--border); }
-    @media (max-width:900px){
-      .hero{ grid-template-columns:1fr; }
-      .tiles{ grid-template-columns:1fr; }
-    }
-  </style>
+  <title>Home — Your Store</title>
+  <meta name="description" content="A self-contained static storefront (no Shopify/WordPress). Products from JSON, cart in localStorage, checkout handoff via WhatsApp/Email.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="site-header"></div>
-  <main class="container" style="padding:24px 0">
-    <section class="hero">
-      <div>
-        <h1 style="margin:0 0 10px 0;">Welcome to My Shop</h1>
-        <p style="color:#444;max-width:48ch">Curated products with simple checkout via WhatsApp or email. Browse categories, add to cart, and place your order in seconds.</p>
-        <div style="display:flex; gap:10px; margin-top:16px;">
-          <a class="btn" href="products.html">Shop Now</a>
-          <a class="btn secondary" href="cart.html">View Cart</a>
-        </div>
-      </div>
-      <div>
-        <img src="assets/img/banner-1.jpg" alt="Hero banner">
-      </div>
-    </section>
+<header class="topbar">
+  <div class="container flex-between">
+    <a href="index.html" class="brand">Your Store</a>
+    <nav class="nav">
+      <a href="products.html">Products</a>
+      <a href="cart.html" class="cart-link">
+        <span id="cart-count" class="badge">0</span> Cart
+      </a>
+    </nav>
+  </div>
+</header>
+<main class="container">
 
-    <section style="margin-top:28px">
-      <div class="tiles">
-        <a class="tile" href="products.html"><img src="assets/img/banner-2.jpg" alt="Tile 1"></a>
-        <a class="tile" href="products.html"><img src="assets/img/banner-3.jpg" alt="Tile 2"></a>
-        <a class="tile" href="products.html"><img src="assets/img/banner-4.jpg" alt="Tile 3"></a>
-      </div>
-    </section>
+<section class="hero card">
+  <div class="hero-content">
+    <h1>Skincare that loves your skin.</h1>
+    <p>Lightweight formulas, clean ingredients, and prices in PKR. Ships across Pakistan.</p>
+    <div class="hero-actions">
+      <a href="products.html" class="btn btn-primary">Shop Products</a>
+      <a href="#featured" class="btn">See Featured</a>
+    </div>
+  </div>
+</section>
 
-    <section style="margin-top:28px">
-      <h2 style="margin:0 0 10px 0">Featured</h2>
-      <p style="margin:0 0 16px 0; color:#555">A few picks from our latest arrivals.</p>
-      <div id="grid" class="grid"></div>
-    </section>
-  </main>
-  <footer>© 2025 My Shop</footer>
+<section id="featured" class="section">
+  <div class="section-head">
+    <h2>Featured</h2>
+    <a class="link" href="products.html">View all</a>
+  </div>
+  <div id="featured-grid" class="grid"></div>
+</section>
 
-  <script>
-    // Render first 6 products as "featured"
-    (async function() {
-      try {
-        const res = await fetch('products.json');
-        const items = (await res.json()).slice(0,6);
-        const grid = document.getElementById('grid');
-        grid.innerHTML = items.map(p => `
-          <article class="card">
-            <a href="product.html?id=${encodeURIComponent(p.id)}">
-              <img src="${p.image}" alt="${p.title}" style="width:100%;height:180px;object-fit:cover"/>
-            </a>
-            <div class="pad">
-              <h3><a href="product.html?id=${encodeURIComponent(p.id)}">${p.title}</a></h3>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-weight:600">${(p.price).toLocaleString()} ${p.currency || 'PKR'}</span>
-                <button class="btn" onclick="Store.addToCart('${p.id}',1)">Add</button>
-              </div>
-            </div>
-          </article>
-        `).join('');
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  </script>
-  <script src="assets/shop.js"></script>
+</main>
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 Your Store — Static shop on GitHub Pages. No Shopify/WordPress.</p>
+  </div>
+</footer>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script><script>renderFeaturedProducts();</script>
 </body>
 </html>

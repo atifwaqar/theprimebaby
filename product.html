@@ -3,11 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Product</title>
-  <link rel="stylesheet" href="assets/shop.css">
+  <title>Product — Your Store</title>
+  <meta name="description" content="A self-contained static storefront (no Shopify/WordPress). Products from JSON, cart in localStorage, checkout handoff via WhatsApp/Email.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="product">
-  <div id="product"></div>
-  <script src="assets/shop.js"></script>
+<body>
+<header class="topbar">
+  <div class="container flex-between">
+    <a href="index.html" class="brand">Your Store</a>
+    <nav class="nav">
+      <a href="products.html">Products</a>
+      <a href="cart.html" class="cart-link">
+        <span id="cart-count" class="badge">0</span> Cart
+      </a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+
+<section class="section">
+  <div id="product-detail" class="product-detail"></div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 Your Store — Static shop on GitHub Pages. No Shopify/WordPress.</p>
+  </div>
+</footer>
+<script src="js/store.js"></script>
+<script src="js/product.js"></script>
 </body>
 </html>
