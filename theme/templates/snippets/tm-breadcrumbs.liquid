@@ -1,0 +1,123 @@
+{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{% if template != 'article' and template != 'product' %}
+  <h1 class="breadcrumb_title">{{ page_title }}</h1>
+{% endif %}
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+  <a href="/" class="breadcrumb-home" title="Home">Home</a>
+  {%- if template contains 'page' -%}
+    <span>{{ page.title }}</span>
+
+  {% elsif template contains 'product' %}
+    {% if collection.url %}
+      {{ collection.title | link_to: collection.url }}
+    {% endif %}
+
+    <span>{{ product.title }}</span>
+
+  {% elsif template contains 'collection' and collection.handle %}
+    {% for link in linklists['main-menu'].links %}
+      {% if link.child_active or link.active %}
+        <a href="{{ link.url }}">
+          {{ link.title | escape }}
+        </a>
+
+        {% for clink in link.links %}
+          {% if clink.child_active or clink.active %}
+            <a href="{{ clink.url }}">
+              {{ clink.title | escape }}
+            </a>
+
+            {% for gclink in clink.links %}
+              {% if gclink.child_active or gclink.active %}
+                <a href="{{ gclink.url }}">
+                  {{ gclink.title | escape }}
+                </a>
+              {% endif %}
+            {%- endfor -%}
+          {% endif %}
+        {%- endfor -%}
+      {% endif %}
+    {%- endfor -%}
+    {% comment %}
+      {% for link in linklists['category-menu'].links %}
+        {% if link.child_active or link.active %}
+          <a href="{{ link.url }}">
+            {{ link.title | escape }}
+          </a>
+
+          {% for clink in link.links %}
+            {% if clink.child_active or clink.active %}
+              <a href="{{ clink.url }}">
+                {{ clink.title | escape }}
+              </a>
+
+              {% for gclink in clink.links %}
+                {% if gclink.child_active or gclink.active %}
+                  <a href="{{ gclink.url }}">
+                    {{ gclink.title | escape }}
+                  </a>
+                {% endif %}
+              {%- endfor -%}
+            {% endif %}
+          {%- endfor -%}
+        {% endif %}
+      {%- endfor -%}
+    {% endcomment %}
+
+  {% elsif template == 'blog' %}
+    {% for link in linklists['main-menu'].links %}
+      {% if link.child_active or link.active %}
+        <a href="{{ link.url }}">
+          {{ link.title | escape }}
+        </a>
+
+        {% for clink in link.links %}
+          {% if clink.child_active or clink.active %}
+            <a href="{{ clink.url }}">
+              {{ clink.title | escape }}
+            </a>
+
+            {% for gclink in clink.links %}
+              {% if gclink.child_active or gclink.active %}
+                <a href="{{ gclink.url }}">
+                  {{ gclink.title | escape }}
+                </a>
+              {% endif %}
+            {%- endfor -%}
+          {% endif %}
+        {%- endfor -%}
+      {% endif %}
+    {%- endfor -%}
+
+    <span>{{ blog.title }}</span>
+
+  {% elsif template == 'article' %}
+    {% for link in linklists['main-menu'].links %}
+      {% if link.child_active or link.active %}
+        <a href="{{ link.url }}">
+          {{ link.title | escape }}
+        </a>
+
+        {% for clink in link.links %}
+          {% if clink.child_active or clink.active %}
+            <a href="{{ clink.url }}">
+              {{ clink.title | escape }}
+            </a>
+
+            {% for gclink in clink.links %}
+              {% if gclink.child_active or gclink.active %}
+                <a href="{{ gclink.url }}">
+                  {{ gclink.title | escape }}
+                </a>
+              {% endif %}
+            {%- endfor -%}
+          {% endif %}
+        {%- endfor -%}
+      {% endif %}
+    {%- endfor -%}
+
+    <span>{{ article.title }}</span>
+  {% endif %}
+</nav>
+
+<div class="collection-hero__description rte">{{ collection.description }}</div>
