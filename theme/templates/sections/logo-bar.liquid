@@ -1,0 +1,224 @@
+{{ 'logo-bar.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+    padding-left: {{ section.settings.padding_left | times: 0.5 | round: 0 }}px;
+    padding-right: {{ section.settings.padding_right | times: 0.5 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding-left: {{ section.settings.padding_left }}px;
+      padding-right: {{ section.settings.padding_right }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="logo">
+  <div class="page-width">
+    <div class="color-{{ section.settings.color_scheme }} gradient content-container section-{{ section.id }}-padding">
+      <div class="title-wrapper--no-top-margin">
+        <h2 class="title {{ section.settings.heading_size }}">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {% if section.blocks.size > 0 %}
+        <ul class="logo-bar owl-carousel">
+          {% for block in section.blocks %}
+            {% if block.settings.image != blank %}
+              <li class="logo-bar__item">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="logo-bar__link">
+                {% endif %}
+
+                {{
+                  block.settings.image
+                  | img_url: '112X103', scale: 2
+                  | img_tag: block.settings.image.alt, 'logo-bar__image'
+                }}
+
+                {% if block.settings.link != blank %}
+                  </a>
+                {% endif %}
+              </li>
+            {% else %}
+              {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if section.blocks.size == 0 %}
+        <div class="placeholder-noblocks">
+          {{ 'homepage.onboarding.no_content' | t }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+      $('.logo-bar').owlCarousel({
+        loop: !0,
+        nav: !0,
+        dots: !1,
+        autoplay: !0,
+        responsive:{
+          0:{
+            items:2
+          },
+          380:{
+            items:2
+          },
+          479:{
+            items:3
+          },
+          750:{
+            items:4
+          },
+          990:{
+            items:4
+          },
+          1270:{
+            items:6
+          }
+      }
+      })
+
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.logo-bar.name",
+  "tag": "section",
+  "class": "brand-section section",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Shop By Brands",
+      "label": "t:sections.featured-blog.settings.heading.label"
+      },
+      {
+        "type": "select",
+        "id": "heading_size",
+        "options": [
+          {
+            "value": "h2",
+            "label": "t:sections.all.heading_size.options__1.label"
+          },
+          {
+            "value": "h1",
+            "label": "t:sections.all.heading_size.options__2.label"
+          },
+          {
+            "value": "h0",
+            "label": "t:sections.all.heading_size.options__3.label"
+          }
+        ],
+        "default": "h2",
+        "label": "t:sections.all.heading_size.label"
+      },
+     {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-2",
+      "label": "t:sections.all.colors.label"
+    },
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_left",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_right",
+      "default": 30
+    }
+	],
+    "blocks": [
+      {
+        "type": "logo_image",
+        "name": "t:sections.logo-bar.blocks.name",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.logo-bar.blocks.settings.image.label"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "t:sections.logo-bar.blocks.settings.link.label",
+            "info": "t:sections.logo-bar.blocks.settings.link.info"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "t:sections.logo-bar.presets.name"
+      }
+    ]
+}
+{% endschema %}
