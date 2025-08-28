@@ -44,6 +44,33 @@ function normalizeBlocks(blocks) {
   return Object.entries(blocks).map(([id, b]) => ({ id, type: b?.type, settings: (b && b.settings) || {} }));
 }
 
+function adaptProduct(p) {
+  const price = Number(p.price ?? 0);
+  const compare_at_price = Number(p.compare_at_price ?? 0);
+  const variant = {
+    id: p.variants?.[0]?.id || `${p.handle}-v1`,
+    title: p.variants?.[0]?.title || "Default",
+    price,
+    compare_at_price
+  };
+  return {
+    handle: p.handle,
+    title: p.title,
+    url: `/products/${p.handle}`,
+    featured_image: p.featured_image || p.image || "",
+    price,
+    compare_at_price,
+    variants: p.variants || [variant],
+    selected_or_first_available_variant: variant,
+    // minimal fields often referenced by snippets
+    available: true,
+    images: p.images || [p.featured_image || p.image].filter(Boolean),
+    media: [],
+    vendor: p.vendor || "",
+    tags: p.tags || []
+  };
+}
+
 // ---- Compose a page from index.liquid or index.json
 async function renderHome(engine, context) {
   // Try classic index.liquid first
@@ -123,7 +150,7 @@ function formatMoney(cents, moneyFormat, currency = "") {
       cart: { item_count: 0, total_price: 0 },
       settings,
       locale, // expose translations
-      all_products: Object.fromEntries(products.map(p => [p.handle, p]))
+      all_products: Object.fromEntries(products.map(p => [p.handle, adaptProduct(p)]))
     };
 
     const LiquidCtor = getLiquidCtor();
