@@ -1,0 +1,11 @@
+{
+  "frontpage": {
+    "title": "Featured",
+    "handle": "frontpage",
+    "products": [
+      "prime-bottle",
+      "pacifier-pro",
+      "cozy-blanket"
+    ]
+  }
+}
