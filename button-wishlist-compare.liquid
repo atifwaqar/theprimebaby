@@ -1,0 +1,41 @@
+{% comment %}
+  Shopify Wishlist
+  Usage:
+    - Markup: {%- render 'button-wishlist-compare', product: product -%}
+    - Place this snippet inside your existing product card snippet
+
+  Parameters:
+    - product: <Shopify product> (required)
+{% endcomment %}
+{%- if product.handle != blank -%}
+  {%- if settings.enable_wishlist_icon -%}
+    <button
+      type="button"
+      aria-label="Add to wishlist"
+      class="cm-link btn--status wishlist"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="Wishlist"
+      button-wishlist
+      data-product-handle="{{ product.handle }}"
+    >
+      {%- render 'icon-cmheart' -%}
+      {% render 'icon-solidheart' %}
+    </button>
+  {%- endif -%}
+  {%- if settings.enable_compare_icon -%}
+    <button
+      type="button"
+      aria-label="Add to compare"
+      class="cm-link btn--status compare"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="Compare"
+      button-compare
+      data-product-handle="{{ product.handle }}"
+    >
+      {%- render 'icon-cmcompare' -%}
+      {% render 'icon-addcompare' %}
+    </button>
+  {%- endif -%}
+{%- endif -%}
