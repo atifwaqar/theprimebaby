@@ -34,18 +34,18 @@ async function copyAssets() {
 
 function preprocessLiquid(src) {
   return src
-    // Shopify block tags → plain HTML
-    .replace(/{%[-\s]*style[-\s]*%}/g, "<style>")
-    .replace(/{%[-\s]*endstyle[-\s]*%}/g, "</style>")
-    .replace(/{%[-\s]*stylesheet[-\s]*%}/g, "<style>")
-    .replace(/{%[-\s]*endstylesheet[-\s]*%}/g, "</style>")
-    .replace(/{%[-\s]*javascript[-\s]*%}/g, "<script>")
-    .replace(/{%[-\s]*endjavascript[-\s]*%}/g, "</script>")
-    // Shopify form → inert form
-    .replace(/{%[-\s]*form\b[^%]*%}/g, '<form data-shopify-form="stub">')
-    .replace(/{%[-\s]*endform[-\s]*%}/g, "</form>")
-    // Remove editor schema blocks
-    .replace(/{%[-\s]*schema[-\s]*%}[\s\S]*?{%[-\s]*endschema[-\s]*%}/g, "");
+    // Normalize Shopify-only block tags into plain HTML
+    .replace(/{%[-\s]*style\s*%}/gi, "<style>")
+    .replace(/{%[-\s]*endstyle\s*%}/gi, "</style>")
+    .replace(/{%[-\s]*stylesheet\s*%}/gi, "<style>")
+    .replace(/{%[-\s]*endstylesheet\s*%}/gi, "</style>")
+    .replace(/{%[-\s]*javascript\s*%}/gi, "<script>")
+    .replace(/{%[-\s]*endjavascript\s*%}/gi, "</script>")
+    // Forms
+    .replace(/{%[-\s]*form\b[^%]*%}/gi, '<form data-shopify-form="stub">')
+    .replace(/{%[-\s]*endform[-\s]*%}/gi, "</form>")
+    // Drop schema blocks
+    .replace(/{%[-\s]*schema[-\s]*%}[\s\S]*?{%[-\s]*endschema[-\s]*%}/gi, "");
 }
 
 async function readThemeFile(rel) {
