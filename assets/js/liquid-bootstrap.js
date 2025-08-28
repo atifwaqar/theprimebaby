@@ -1,45 +1,48 @@
 // Minimal browser runtime to render Liquid templates using LiquidJS.
-// Expects a global `liquidjs.Liquid` OR `Liquid` constructor (provided by the real browser build).
 
-async function fetchText(path) {
-  const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`);
-  return res.text();
-}
+async function fetchText(path){ const r=await fetch(path,{cache:"no-store"}); if(!r.ok) throw new Error(`Failed ${path}: ${r.status}`); return r.text(); }
+async function fetchJSON(path){ const r=await fetch(path,{cache:"no-store"}); if(!r.ok) throw new Error(`Failed ${path}: ${r.status}`); return r.json(); }
 
-async function fetchJSON(path) {
-  const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`);
-  return res.json();
-}
-
-function getLiquidCtor() {
+function getLiquidCtor(){
   if (window.liquidjs && typeof window.liquidjs.Liquid === "function") return window.liquidjs.Liquid;
   if (typeof window.Liquid === "function") return window.Liquid;
-  throw new Error("LiquidJS not found. Ensure assets/js/liquid.browser.min.js is the real LiquidJS browser build.");
+  throw new Error("LiquidJS not found. Ensure assets/js/liquid.browser.min.js is the real browser bundle.");
 }
 
-// Try to render a Liquid page; if not present, render a JSON template by composing sections.
-async function renderHome(engine, context) {
-  // Prefer a classic Liquid template if supplied
-  try {
-    const template = await fetchText("templates/index.liquid");
-    return await engine.parseAndRender(template, context);
-  } catch {
-    // Fall through to JSON template
+// turn blocks into an array of {id,type,settings}
+function normalizeBlocks(blocks){
+  if (!blocks) return [];
+  if (Array.isArray(blocks)) {
+    // Already an array; ensure id exists
+    return blocks.map(b => ({ id: b.id || b.type, type: b.type, settings: b.settings || {} }));
   }
+  // Object map: { "<id>": { type, settings } }
+  return Object.entries(blocks).map(([id, b]) => ({
+    id,
+    type: b?.type,
+    settings: (b && b.settings) || {}
+  }));
+}
 
-  // Dawn-style JSON template (Shopstic uses this)
+// Compose a page from templates/index.json (Dawn-style) or fall back to templates/index.liquid
+async function renderHome(engine, context){
+  // Prefer classic Liquid if present
+  try {
+    const liquidTpl = await fetchText("templates/index.liquid");
+    return await engine.parseAndRender(liquidTpl, context);
+  } catch { /* continue to JSON template */ }
+
   const tpl = await fetchJSON("templates/index.json");
-  const order = tpl.order || tpl.sections_order || tpl.ordering || Object.keys(tpl.sections);
+  const order = tpl.order || tpl.sections_order || tpl.ordering || Object.keys(tpl.sections || {});
   let html = "";
 
   for (const sectionId of order) {
-    const sec = tpl.sections[sectionId];
-    if (!sec) continue;
+    const sec = tpl.sections?.[sectionId];
+    if (!sec || !sec.type) continue;            // guard
+    if (sec.disabled === true) continue;        // some themes allow disabled sections
 
-    const sectionPath = `sections/${sec.type}.liquid`;
-    const sectionLiquid = await fetchText(`templates/${sectionPath}`);
+    const sectionLiquid = await fetchText(`templates/sections/${sec.type}.liquid`).catch(() => "");
+    if (!sectionLiquid) continue;               // skip if missing
 
     const sectionCtx = {
       ...context,
@@ -47,11 +50,7 @@ async function renderHome(engine, context) {
         id: sectionId,
         type: sec.type,
         settings: sec.settings || {},
-        blocks: (sec.blocks || []).map(b => ({
-          id: b.id || b.type,
-          type: b.type,
-          settings: b.settings || {}
-        }))
+        blocks: normalizeBlocks(sec.blocks)
       }
     };
 
@@ -61,18 +60,14 @@ async function renderHome(engine, context) {
   return html;
 }
 
-(async function run() {
+(async function run(){
   const mount = document.getElementById("app");
   try {
     const settings = await fetchJSON("data/settings.json");
     const products = await fetchJSON("data/products.json");
 
     const context = {
-      shop: {
-        name: settings.shop_name,
-        description: settings.shop_description,
-        money_format: settings.money_format
-      },
+      shop: { name: settings.shop_name, description: settings.shop_description, money_format: settings.money_format },
       collections: settings.collections,
       routes: { cart_url: "/cart", all_products_collection_url: "/collections/all" },
       cart: { item_count: 0, total_price: 0 },
@@ -84,15 +79,10 @@ async function renderHome(engine, context) {
     const engine = new LiquidCtor({
       extname: ".liquid",
       dynamicPartials: true,
-      relativeReference: false, // removes fs.dirname/fs.sep warning
+      relativeReference: false,
       fs: {
         exists: async (filepath) => {
-          try {
-            const r = await fetch(`templates/${filepath}`, { method: "HEAD" });
-            return r.ok;
-          } catch {
-            return false;
-          }
+          try { const r = await fetch(`templates/${filepath}`, { method: "HEAD" }); return r.ok; } catch { return false; }
         },
         readFile: async (filepath) => fetchText(`templates/${filepath}`),
         resolve: (root, file, ext) => {
