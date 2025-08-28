@@ -2,7 +2,7 @@ name: Build & Deploy (LiquidJS → GitHub Pages)
 
 on:
   push:
-    branches: [ main ]   # change to your default branch if needed
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -28,8 +28,6 @@ jobs:
 
       - name: Install deps
         run: npm install
-
-      # (Optional) If you renamed/moved sections/snippets, ensure build.mjs maps them correctly.
 
       - name: Build static site
         run: npm run build
