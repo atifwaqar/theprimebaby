@@ -46,14 +46,16 @@ function normalizeBlocks(blocks) {
 
 // ---- Compose a page from index.liquid or index.json
 async function renderHome(engine, context) {
+  // Try classic index.liquid first
   try {
     const raw = await fetchText("templates/index.liquid");
     return await engine.parseAndRender(preprocessLiquid(raw), context);
-  } catch { /* fall back to JSON */ }
+  } catch {}
 
+  // Compose from index.json (sections -> HTML)
   const tpl = await fetchJSON("templates/index.json");
   const order = tpl.order || tpl.sections_order || tpl.ordering || Object.keys(tpl.sections || {});
-  let html = "";
+  let bodyHtml = "";
 
   for (const sectionId of order) {
     const sec = tpl.sections?.[sectionId];
@@ -71,10 +73,21 @@ async function renderHome(engine, context) {
         blocks: normalizeBlocks(sec.blocks)
       }
     };
-    html += await engine.parseAndRender(preprocessLiquid(raw), sectionCtx) + "\n";
+    bodyHtml += await engine.parseAndRender(preprocessLiquid(raw), sectionCtx) + "\n";
   }
-  return html;
+
+  // NEW: wrap with layout/theme.liquid so CSS/JS load
+  try {
+    const layoutRaw = await fetchText("templates/layout/theme.liquid");
+    const layout = preprocessLiquid(layoutRaw);
+    // Shopify provides {{ content_for_layout }} → we inject our composed sections
+    return await engine.parseAndRender(layout, { ...context, content_for_layout: bodyHtml });
+  } catch {
+    // fallback to sections-only if layout missing
+    return bodyHtml;
+  }
 }
+
 
 // ---- Money formatting helper
 function formatMoney(cents, moneyFormat, currency = "") {
