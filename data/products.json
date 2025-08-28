@@ -2,7 +2,8 @@
   {
     "handle": "prime-bottle",
     "title": "Prime Bottle 250ml",
-    "price": 1499,
+    "price": 1999,
+    "compare_at_price": 2499,
     "featured_image": "https://placehold.co/600x600?text=Bottle"
   },
   {

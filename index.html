@@ -1,34 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shopstic – Browser Runtime (LiquidJS)</title>
-  <!-- Optional: set a base path if hosting under user.github.io/repo -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopstic – Static Runtime</title>
+  <!-- If hosting under /USER/REPO, keep paths relative and uncomment base: -->
   <!-- <base href="./"> -->
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 0; }
-    header { padding: 16px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: #fff; z-index: 10; }
-    main { padding: 16px; }
-    .notice { background: #fffbdd; border: 1px solid #ffe58f; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
-  </style>
 </head>
 <body>
-  <header>
-    <strong>Shopstic – Browser Runtime Demo</strong>
-  </header>
-  <main>
-    <div class="notice">
-      This page renders a Liquid template in the browser using LiquidJS. Replace the placeholder
-      <code>assets/js/liquid.browser.min.js</code> with the real LiquidJS browser build.
+  <main style="padding:16px;">
+    <div class="notice" style="background:#fffbdd;border:1px solid #ffe58f;padding:12px;border-radius:10px;margin-bottom:16px;">
+      This static bundle renders your Shopify theme in the browser using LiquidJS.
+      Replace <code>assets/js/liquid.browser.min.js</code> with the real browser build.
     </div>
     <div id="app">Loading…</div>
   </main>
-
-  <!-- 1) LiquidJS browser build (placeholder file; replace with the real build) -->
   <script src="assets/js/liquid.browser.min.js"></script>
-
-  <!-- 2) Our bootstrap -->
-  <script src="assets/js/liquid-bootstrap.js" type="module"></script>
+  <script src="assets/js/boot.js" type="module"></script>
 </body>
 </html>

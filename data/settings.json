@@ -1,6 +1,6 @@
 {
   "shop_name": "The Prime Baby",
-  "shop_description": "A static demo rendered in the browser with LiquidJS.",
+  "shop_description": "Static runtime of Shopstic theme.",
   "money_format": "${{amount}}",
   "collections": {
     "frontpage": {
