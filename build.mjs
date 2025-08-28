@@ -3,7 +3,7 @@ import { Liquid } from "liquidjs";
 import fs from "node:fs/promises";
 import fssync from "node:fs";
 import path from "node:path";
-import glob from "glob";
+import { glob } from "glob";
 
 const THEME_DIR = path.resolve("theme");
 const OUT_DIR = path.resolve("dist");
