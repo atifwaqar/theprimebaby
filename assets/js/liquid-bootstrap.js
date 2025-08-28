@@ -1,10 +1,11 @@
-// Minimal browser runtime to render Shopify-like Liquid on static hosting (GitHub Pages) using LiquidJS.
-// - Loads Dawn/Shopstic JSON templates and stitches sections
-// - Normalizes section blocks (array or object map)
-// - Preprocesses Shopify-only block tags: {% style %}, {% javascript %}, {% schema %}
-// - Resolves {% render %}/{% include %} from /templates/snippets
+// Browser runtime to render a Shopify theme on static hosting using LiquidJS.
+// Features:
+// - Preprocess Shopify-only tags: {% style %}, {% javascript %}, {% schema %}, {% form %}
+// - Compose Dawn-style templates/index.json from /templates/sections/*.liquid
+// - Normalize section.blocks (array or object)
+// - Register Shopify-like filters: asset_url, stylesheet_tag, script_tag, image_url/img_url,
+//   money, money_with_currency, t (translations)
 
-// -------- fetch helpers -----------------------------------------------------
 async function fetchText(path) {
   const r = await fetch(path, { cache: "no-store" });
   if (!r.ok) throw new Error(`Failed ${path}: ${r.status}`);
@@ -16,72 +17,51 @@ async function fetchJSON(path) {
   return r.json();
 }
 
-// -------- LiquidJS ctor resolver -------------------------------------------
 function getLiquidCtor() {
   if (window.liquidjs && typeof window.liquidjs.Liquid === "function") return window.liquidjs.Liquid;
   if (typeof window.Liquid === "function") return window.Liquid;
   throw new Error("LiquidJS not found. Ensure assets/js/liquid.browser.min.js is the real browser bundle.");
 }
 
-// -------- Shopify-to-HTML preprocessor -------------------------------------
-// Converts Shopify-only block tags to plain HTML, strips editor schema.
-// Handles whitespace-trim variants ({%- tag -%}).
+// ---- Preprocess Shopify-only block tags into plain HTML, strip editor schema
 function preprocessLiquid(source) {
   return source
-    // Shopify-only block tags → plain HTML
     .replace(/{%[-\s]*style[-\s]*%}/g, "<style>")
     .replace(/{%[-\s]*endstyle[-\s]*%}/g, "</style>")
     .replace(/{%[-\s]*javascript[-\s]*%}/g, "<script>")
     .replace(/{%[-\s]*endjavascript[-\s]*%}/g, "</script>")
-    // NEW: neutralize Shopify {% form %} blocks
+    // neutralize {% form %} to a plain <form>
     .replace(/{%[-\s]*form\b[^%]*%}/g, '<form data-shopify-form="stub">')
     .replace(/{%[-\s]*endform[-\s]*%}/g, "</form>")
-    // Remove Shopify editor schema blocks entirely
+    // remove editor schema blocks
     .replace(/{%[-\s]*schema[-\s]*%}[\s\S]*?{%[-\s]*endschema[-\s]*%}/g, "");
 }
 
-
-// -------- blocks normalizer -------------------------------------------------
+// ---- Normalize blocks into [{id,type,settings}]
 function normalizeBlocks(blocks) {
   if (!blocks) return [];
-  if (Array.isArray(blocks)) {
-    return blocks.map(b => ({ id: b.id || b.type, type: b.type, settings: b.settings || {} }));
-  }
-  // Object map: { "<id>": { type, settings } }
-  return Object.entries(blocks).map(([id, b]) => ({
-    id,
-    type: b?.type,
-    settings: (b && b.settings) || {}
-  }));
+  if (Array.isArray(blocks)) return blocks.map(b => ({ id: b.id || b.type, type: b.type, settings: b.settings || {} }));
+  return Object.entries(blocks).map(([id, b]) => ({ id, type: b?.type, settings: (b && b.settings) || {} }));
 }
 
-// -------- page composer (index.liquid OR index.json) ------------------------
+// ---- Compose a page from index.liquid or index.json
 async function renderHome(engine, context) {
-  // Prefer a classic Liquid index if present
   try {
     const raw = await fetchText("templates/index.liquid");
-    const tpl = preprocessLiquid(raw);
-    return await engine.parseAndRender(tpl, context);
-  } catch {
-    // continue to JSON template
-  }
+    return await engine.parseAndRender(preprocessLiquid(raw), context);
+  } catch { /* fall back to JSON */ }
 
-  // Dawn/Shopstic JSON template
   const tpl = await fetchJSON("templates/index.json");
   const order = tpl.order || tpl.sections_order || tpl.ordering || Object.keys(tpl.sections || {});
   let html = "";
 
   for (const sectionId of order) {
     const sec = tpl.sections?.[sectionId];
-    if (!sec || !sec.type) continue;
-    if (sec.disabled === true) continue;
+    if (!sec || !sec.type || sec.disabled === true) continue;
 
-    // Load and preprocess the section liquid
     const raw = await fetchText(`templates/sections/${sec.type}.liquid`).catch(() => "");
     if (!raw) continue;
-    const sectionLiquid = preprocessLiquid(raw);
 
-    // Build section context
     const sectionCtx = {
       ...context,
       section: {
@@ -91,33 +71,45 @@ async function renderHome(engine, context) {
         blocks: normalizeBlocks(sec.blocks)
       }
     };
-
-    const rendered = await engine.parseAndRender(sectionLiquid, sectionCtx);
-    html += rendered + "\n";
+    html += await engine.parseAndRender(preprocessLiquid(raw), sectionCtx) + "\n";
   }
-
   return html;
 }
 
-// -------- main --------------------------------------------------------------
+// ---- Money formatting helper
+function formatMoney(cents, moneyFormat, currency = "") {
+  const amount = (Number(cents) || 0) / 100;
+  const formatted = (moneyFormat || "${{amount}}")
+    .replace("{{amount}}", amount.toFixed(2))
+    .replace("{{ amount }}", amount.toFixed(2));
+  return currency ? `${formatted} ${currency}` : formatted;
+}
+
+// ---- Main
 (async function run() {
   const mount = document.getElementById("app");
 
   try {
-    // Your data model (extend as needed)
-    const settings = await fetchJSON("data/settings.json");
-    const products = await fetchJSON("data/products.json");
+    // Load site settings, mock catalog, and (optional) translations
+    const [settings, products] = await Promise.all([
+      fetchJSON("data/settings.json"),
+      fetchJSON("data/products.json")
+    ]);
+
+    // Try to load a locale file. You can provide either:
+    // - /locales/en.default.json  (copied from the theme), or
+    // - /data/locales/en.json     (your own)
+    let locale = {};
+    try { locale = await fetchJSON("locales/en.default.json"); }
+    catch { try { locale = await fetchJSON("data/locales/en.json"); } catch {} }
 
     const context = {
-      shop: {
-        name: settings.shop_name,
-        description: settings.shop_description,
-        money_format: settings.money_format
-      },
+      shop: { name: settings.shop_name, description: settings.shop_description, money_format: settings.money_format },
       collections: settings.collections,
       routes: { cart_url: "/cart", all_products_collection_url: "/collections/all" },
       cart: { item_count: 0, total_price: 0 },
       settings,
+      locale, // expose translations
       all_products: Object.fromEntries(products.map(p => [p.handle, p]))
     };
 
@@ -125,29 +117,65 @@ async function renderHome(engine, context) {
     const engine = new LiquidCtor({
       extname: ".liquid",
       dynamicPartials: true,
-      relativeReference: false, // silence dirname/sep warning
-      // Custom FS adapter that fetches from /templates and preprocesses content
+      relativeReference: false,
       fs: {
         exists: async (filepath) => {
-          try {
-            const r = await fetch(`templates/${filepath}`, { method: "HEAD", cache: "no-store" });
-            return r.ok;
-          } catch { return false; }
+          try { const r = await fetch(`templates/${filepath}`, { method: "HEAD", cache: "no-store" }); return r.ok; }
+          catch { return false; }
         },
-        readFile: async (filepath) => {
-          const raw = await fetchText(`templates/${filepath}`);
-          return preprocessLiquid(raw);
-        },
+        readFile: async (filepath) => preprocessLiquid(await fetchText(`templates/${filepath}`)),
         resolve: (root, file, ext) => {
           const name = file.endsWith(ext) ? file : file + ext;
-          // If no path given, default to snippets/
           return name.includes("/") ? name : `snippets/${name}`;
         }
       }
     });
 
+    // ---- Register Shopify-like filters (simple shims)
+    // NOTE: LiquidJS filter signature is (v, ...args). Keep them simple for static hosting.
+
+    // Prefix an asset filename with /assets/
+    engine.registerFilter("asset_url", (filename = "") => {
+      filename = String(filename).replace(/^['"]|['"]$/g, "");
+      return `assets/${filename}`;
+    });
+
+    // Turn a URL into <link rel="stylesheet" href="...">
+    engine.registerFilter("stylesheet_tag", (href = "") => {
+      href = String(href);
+      return `<link rel="stylesheet" href="${href}">`;
+    });
+
+    // Turn a URL into <script src="..."></script>
+    engine.registerFilter("script_tag", (src = "") => {
+      src = String(src);
+      return `<script src="${src}"></script>`;
+    });
+
+    // Image URL helpers – pass-through or prefix with assets/
+    function imgUrl(src = "") {
+      src = String(src);
+      if (/^https?:\/\//i.test(src)) return src;
+      if (src.startsWith("assets/")) return src;
+      return `assets/${src}`;
+    }
+    engine.registerFilter("image_url", (src) => imgUrl(src));
+    engine.registerFilter("img_url", (src) => imgUrl(src));
+
+    // Money formatting (very simple)
+    engine.registerFilter("money", (cents) => formatMoney(cents, context.shop.money_format));
+    engine.registerFilter("money_with_currency", (cents, currency) => formatMoney(cents, context.shop.money_format, currency));
+
+    // Translation filter: {{ 'key' | t }} → lookup in context.locale
+    engine.registerFilter("t", (key = "") => {
+      const k = String(key);
+      return (context.locale && (context.locale[k] || context.locale[k.replace(/\s+/g, "_")])) || k;
+    });
+
+    // Render page
     const html = await renderHome(engine, context);
     mount.innerHTML = html;
+
   } catch (err) {
     console.error(err);
     mount.innerHTML = `<pre style="white-space:pre-wrap;color:#b00020;background:#fee;padding:12px;border-radius:8px;">${err}</pre>`;
