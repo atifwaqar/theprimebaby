@@ -135,387 +135,540 @@
     
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      <!-- section: main-cart-items -->
+      <!-- section: main-search -->
 
 
 
 
 
 
+
+  
+  <script src="" defer="defer"></script>
+
+
+<script src="" defer="defer"></script>
+
+<style>
+  .template-search__header {
+    margin-bottom: 3rem;
+  }
+
+  .template-search__search {
+    margin: 0 auto 3.5rem;
+    max-width: 74.1rem;
+  }
+
+  .template-search__search .search {
+    margin-top: 3rem;
+  }
+
+  .template-search--empty {
+    padding-bottom: 18rem;
+  }
+
+  .template-search .template-search__header p{
+    text-align: center;
+  }
+  .template-search .template-search__header p.predictive-search__item-heading.h5{
+    text-align: left;
+  }
+  @media screen and (min-width: 750px) {
+    .template-search__header {
+      margin-bottom: 5rem;
+    }
+  }
+
+  .template-search__search .search__button .icon {
+    height: 2.1rem;
+    width: 2.1rem;
+  }
+</style>
+
+{%- liquid
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign terms = search.terms | escape
+  assign search_url = '?q=' | append: terms | append: '&options%5Bprefix%5D=last&sort_by=' | append: sort_by
+-%}
 
 
   .section--padding {
     padding-top: px;
     padding-bottom: px;
+    padding-left: px;
+    padding-right: px;
   }
 
   @media screen and (min-width: 750px) {
     .section--padding {
       padding-top: px;
       padding-bottom: px;
+      padding-left: px;
+      padding-right: px;
+    }
+  }
+   @media screen and (max-width: 989px) {
+    #main-search-filters.section--padding {
+      padding: 0;
+      background: transparent;
     }
   }
 
 
 
-  <script src="" defer="defer"></script>
-
-
-<cart-items class="page-width is-empty section--padding">
-  <div class="title-wrapper-with-link">
-    <h2></h2>
-    <a href="" class="underlined-link"></a>
-  </div>
-
-  <div class="cart__warnings">
-    <h1 class="cart__empty-text"></h1>
-    <a href="" class="button">
-      
-    </a>
-
-    
-      <h2 class="cart__login-title"></h2>
-      <p class="cart__login-paragraph">
+  <div class="template-search template-search--empty section--padding">
+    <div class="template-search__header page-width">
+      <h1 class="h2 center">
         
-      </p>
-    
-  </div>
-
-  <form action="" class="cart__contents critical-hidden" method="post" id="cart">
-    <div class="cart__items" id="main-cart-items" data-id="">
-      <div class="js-contents">
+          
         
-          <table class="cart-items">
-            <caption class="visually-hidden">
+          
+        
+      </h1>
+      <div class="template-search__search">
+        
+          <predictive-search data-loading-text="">
+        
+        <main-search>
+          <form action="" method="get" role="search" class="search">
+            <div class="field">
+              <input
+                class="search__input field__input"
+                id="Search-In-Template"
+                type="search"
+                name="q"
+                value=""
+                placeholder=""
+                
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                
+              >
+              <label class="field__label" for="Search-In-Template"></label>
+              <input name="options[prefix]" type="hidden" value="last">
+
               
-            </caption>
-            <thead>
-              <tr>
-                <th class="caption-with-letter-spacing" colspan="2" scope="col">
-                  
-                </th>
-                <th class="medium-hide large-up-hide right caption-with-letter-spacing" colspan="1" scope="col">
-                  
-                </th>
-                <th class="cart-items__heading--wide small-hide caption-with-letter-spacing" colspan="1" scope="col">
-                  
-                </th>
-                <th class="small-hide right caption-with-letter-spacing" colspan="1" scope="col">
-                  
-                </th>
-              </tr>
-            </thead>
+                <div class="predictive-search predictive-search--search-template" tabindex="-1" data-predictive-search>
+                  <div class="predictive-search__loading-state">
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      class="spinner"
+                      viewBox="0 0 66 66"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                    </svg>
+                  </div>
+                </div>
 
-            <tbody>
+                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
               
-                <tr class="cart-item" id="CartItem-">
-                  <td class="cart-item__media">
-                    
-                       Leave empty space due to a:empty CSS display: none rule 
-                      <a href="" class="cart-item__link" aria-hidden="true" tabindex="-1"> </a>
-                      <div class="cart-item__image-container gradient global-media-settings">
-                        <img
-                          src=""
-                          class="cart-item__image"
-                          alt=""
-                          loading="lazy"
-                          width="150"
-                          height=""
-                        >
-                      </div>
-                    
-                  </td>
 
-                  <td class="cart-item__details">
-                    
-                      <p class="caption-with-letter-spacing"></p>
-                    
-
-                    <a href="" class="cart-item__name h4 break"></a>
-
-                    
-                      <div class="cart-item__discounted-prices">
-                        <span class="visually-hidden">
-                          
-                        </span>
-                        <s class="cart-item__old-price product-option">
-                          
-                        </s>
-                        <span class="visually-hidden">
-                          
-                        </span>
-                        <strong class="cart-item__final-price product-option">
-                          
-                        </strong>
-                      </div>
-                    
-                      <div class="product-option">
-                        
-                      </div>
-                    
-
-                    
-                      <dl>
-                        
-                          
-                            <div class="product-option">
-                              <dt>:</dt>
-                              <dd></dd>
-                            </div>
-                          
-                        
-
-                        
-                          
-                          
-                            <div class="product-option">
-                              <dt>:</dt>
-                              <dd>
-                                
-                                  <a href="" class="link" target="_blank">
-                                    
-                                  </a>
-                                
-                                  
-                                
-                              </dd>
-                            </div>
-                          
-                        
-                      </dl>
-
-                      <p class="product-option"></p>
-                    
-
-                    <ul class="discounts list-unstyled" role="list" aria-label="">
-                      
-                        <li class="discounts__discount">
-                          
-                          
-                        </li>
-                      
-                    </ul>
-                  </td>
-
-                  <td class="cart-item__totals right medium-hide large-up-hide">
-                    <div class="loading-overlay hidden">
-                      <div class="loading-overlay__spinner">
-                        <svg
-                          aria-hidden="true"
-                          focusable="false"
-                          class="spinner"
-                          viewBox="0 0 66 66"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                        </svg>
-                      </div>
-                    </div>
-                    <div class="cart-item__price-wrapper">
-                      
-                        <dl class="cart-item__discounted-prices">
-                          <dt class="visually-hidden">
-                            
-                          </dt>
-                          <dd>
-                            <s class="cart-item__old-price price price--end">
-                              
-                            </s>
-                          </dd>
-                          <dt class="visually-hidden">
-                            
-                          </dt>
-                          <dd class="price price--end">
-                            
-                          </dd>
-                        </dl>
-                      
-                        <span class="price price--end">
-                          
-                        </span>
-                      
-
-                      
-                        <div class="unit-price caption">
-                          <span class="visually-hidden"></span>
-                          
-                          <span aria-hidden="true">/</span>
-                          <span class="visually-hidden"
-                            >&nbsp;&nbsp;</span
-                          >
-                          
-                            
-                          
-                          
-                        </div>
-                      
-                    </div>
-                  </td>
-
-                  <td class="cart-item__quantity">
-                    <div class="cart-item__quantity-wrapper">
-                      <label class="visually-hidden" for="Quantity-">
-                        
-                      </label>
-                      <quantity-input class="quantity cart-quantity">
-                        <button class="quantity__button no-js-hidden" name="minus" type="button">
-                          <span class="visually-hidden">
-                            
-                          </span>
-                          
-                        </button>
-                        <input
-                          class="quantity__input"
-                          data-quantity-variant-id=""
-                          type="number"
-                          name="updates[]"
-                          value=""
-                          
-                          data-cart-quantity=""
-                          min=""
-                          
-                            max=""
-                          
-                          step=""
-                          
-                          aria-label=""
-                          id="Quantity-"
-                          data-index=""
-                        >
-                        <button class="quantity__button no-js-hidden" name="plus" type="button">
-                          <span class="visually-hidden">
-                            
-                          </span>
-                          
-                        </button>
-                      </quantity-input>
-
-                      <cart-remove-button
-                        id="Remove-"
-                        data-index=""
-                      >
-                        <a
-                          href=""
-                          class="button button--tertiary"
-                          aria-label=""
-                        >
-                          
-                        </a>
-                      </cart-remove-button>
-                    </div>
-                    <div class="cart-item__error" id="Line-item-error-" role="alert">
-                      <small class="cart-item__error-text"></small>
-                      <svg
-                        aria-hidden="true"
-                        focusable="false"
-                        class="icon icon-error"
-                        viewBox="0 0 13 13"
-                      >
-                        <circle cx="6.5" cy="6.50049" r="5.5" stroke="white" stroke-width="2"/>
-                        <circle cx="6.5" cy="6.5" r="5.5" fill="#EB001B" stroke="#EB001B" stroke-width="0.7"/>
-                        <path d="M5.87413 3.52832L5.97439 7.57216H7.02713L7.12739 3.52832H5.87413ZM6.50076 9.66091C6.88091 9.66091 7.18169 9.37267 7.18169 9.00504C7.18169 8.63742 6.88091 8.34917 6.50076 8.34917C6.12061 8.34917 5.81982 8.63742 5.81982 9.00504C5.81982 9.37267 6.12061 9.66091 6.50076 9.66091Z" fill="white"/>
-                        <path d="M5.87413 3.17832H5.51535L5.52424 3.537L5.6245 7.58083L5.63296 7.92216H5.97439H7.02713H7.36856L7.37702 7.58083L7.47728 3.537L7.48617 3.17832H7.12739H5.87413ZM6.50076 10.0109C7.06121 10.0109 7.5317 9.57872 7.5317 9.00504C7.5317 8.43137 7.06121 7.99918 6.50076 7.99918C5.94031 7.99918 5.46982 8.43137 5.46982 9.00504C5.46982 9.57872 5.94031 10.0109 6.50076 10.0109Z" fill="white" stroke="#EB001B" stroke-width="0.7">
-                      </svg>
-                    </div>
-                  </td>
-
-                  <td class="cart-item__totals right small-hide">
-                    <div class="loading-overlay hidden">
-                      <div class="loading-overlay__spinner">
-                        <svg
-                          aria-hidden="true"
-                          focusable="false"
-                          class="spinner"
-                          viewBox="0 0 66 66"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                        </svg>
-                      </div>
-                    </div>
-
-                    <div class="cart-item__price-wrapper">
-                      
-                        <dl class="cart-item__discounted-prices">
-                          <dt class="visually-hidden">
-                            
-                          </dt>
-                          <dd>
-                            <s class="cart-item__old-price price price--end">
-                              
-                            </s>
-                          </dd>
-                          <dt class="visually-hidden">
-                            
-                          </dt>
-                          <dd class="price price--end">
-                            
-                          </dd>
-                        </dl>
-                      
-                        <span class="price price--end">
-                          
-                        </span>
-                      
-
-                      
-                        <div class="unit-price caption">
-                          <span class="visually-hidden"></span>
-                          
-                          <span aria-hidden="true">/</span>
-                          <span class="visually-hidden"
-                            >&nbsp;&nbsp;</span
-                          >
-                          
-                            
-                          
-                          
-                        </div>
-                      
-                    </div>
-                  </td>
-                </tr>
-              
-            </tbody>
-          </table>
+              <button
+                type="reset"
+                class="reset__button field__button hidden"
+                aria-label=""
+              >
+                <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                  <use xlink:href="#icon-reset">
+                </svg>
+              </button>
+              <button type="submit" class="search__button field__button" aria-label="">
+                <svg class="icon icon-search" aria-hidden="true" focusable="false">
+                  <use xlink:href="#icon-search">
+                </svg>
+              </button>
+            </div>
+          </form>
+        </main-search>
+        
+          </predictive-search>
         
       </div>
-    </div>
-
-    <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
-    <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">
       
-    </p>
-  </form>
-</cart-items>
+        
+          
+            <p role="status">
+              
+            </p>
+          
+        
+        
+          <p role="status"></p>
+        
+      
+    </div>
+    
+      
+        <facet-filters-form class="facets facets-vertical-sort page-width small-hide medium-hide no-js-hidden">
+          <form class="facets-vertical-form" id="FacetSortForm">
+            <div class="facet-filters sorting caption">
+              <div class="facet-filters__field">
+                <h2 class="facet-filters__label caption-large text-body">
+                  <label for="SortBy"></label>
+                </h2>
+                <div class="select">
+                  
+                  <select
+                    name="sort_by"
+                    class="facet-filters__sort select__select caption-large"
+                    id="SortBy"
+                    aria-describedby="a11y-refresh-page-message"
+                  >
+                    
+                      <option
+                        value=""
+                        
+                          selected="selected"
+                        
+                      >
+                        
+                      </option>
+                    
+                  </select>
+                  
+                </div>
+              </div>
+              <noscript>
+                <button type="submit" class="facets__button-no-js button button--secondary">
+                  
+                </button>
+              </noscript>
+            </div>
+
+            <div class="product-count-vertical light" role="status">
+              <h2 class="product-count__text text-body">
+                <span id="ProductCountDesktop">
+                  
+                    
+                  
+                    
+                  
+                    
+                  
+                </span>
+              </h2>
+              <div class="loading-overlay__spinner">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="spinner"
+                  viewBox="0 0 66 66"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </div>
+            </div>
+          </form>
+        </facet-filters-form>
+      
+      <div
+        
+          class="facets-vertical page-width"
+        
+      >
+        
+          
+            <aside
+              aria-labelledby="verticalTitle"
+              class="facets-wrapper  color- isolate gradient content-container section--padding facets-wrapper--no-filters page-width"
+              id="main-search-filters"
+              data-id=""
+            >
+              
+            </aside>
+          
+        
+        <div class="product-grid-container" id="ProductGridContainer">
+          
+            <div
+              class="template-search__results collection collection--empty page-width"
+              id="product-grid"
+              data-id=""
+            >
+              <div class="loading-overlay gradient"></div>
+              <div class="title-wrapper center">
+                <h2 class="title title--primary">
+                  
+                  <br>
+                  
+                </h2>
+              </div>
+            </div>
+          
+            <div
+              class="template-search__results collection page-width"
+              id="product-grid"
+              data-id=""
+            >
+              <div class="loading-overlay gradient"></div>
+              <ul
+                class="grid product-grid  grid---col-tablet-down grid---col-desktop color- isolate gradient content-container section--padding"
+                role="list"
+              >
+                
+                  
+                  
+                    
+                  
+
+                  <li class="grid__item">
+                    
+                      
+                        vendor,title,price
+                        
+                      
+                        
+                      
+                        <div class="article-card-wrapper card-wrapper underline-links-hover">
+                          <div
+                            class="card card--card card--text ratio color-"
+                            style="--ratio-percent: 100%;"
+                          >
+                            <div class="card__content">
+                              <div class="card__information">
+                                <h3 class="card__heading">
+                                  <a href="" class="full-unstyled-link">
+                                    
+                                  </a>
+                                </h3>
+                              </div>
+                              <div class="card__badge ">
+                                <span class="badge color-background-1"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    
+                  </li>
+                
+              </ul>
+              
+                
+              
+            </div>
+          
+        </div>
+      </div>
+    
+  </div>
+
 
 
 {
-  "name": "t:sections.main-cart-items.name",
+  "name": "t:sections.main-search.name",
+  "tag": "section",
+  "class": "section",
   "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "label": "t:sections.main-search.settings.columns_desktop.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header__1.content"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-search.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-search.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-search.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-search.settings.image_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_secondary_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_rating.label",
+      "info": "t:sections.main-search.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-collection-product-grid.settings.header__1.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_filtering.label",
+      "info": "t:sections.main-collection-product-grid.settings.enable_filtering.info"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__1.label"
+        },
+        {
+          "value": "vertical",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__2.label"
+        },
+        {
+          "value": "drawer",
+          "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
+        }
+      ],
+      "default": "horizontal",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "t:sections.main-collection-product-grid.settings.filter_type.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "t:sections.main-collection-product-grid.settings.enable_sorting.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header__2.content",
+      "info": "t:sections.main-search.settings.header__2.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_date",
+      "default": true,
+      "label": "t:sections.main-search.settings.article_show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "article_show_author",
+      "default": false,
+      "label": "t:sections.main-search.settings.article_show_author.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.header_mobile.content"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.main-search.settings.columns_mobile.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-search.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-search.settings.columns_mobile.options__2.label"
+        }
+      ]
+    },
     {
       "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info"
     },
     {
       "type": "range",
       "id": "padding_top",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 5,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 30
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
       "max": 100,
-      "step": 4,
+      "step": 5,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_left",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_right",
+      "default": 30
     }
   ]
 }
@@ -523,148 +676,6 @@
 
 <!-- TODO: Dynamic loop/conditional replaced by static fallback. -->
 
-<!-- section: main-cart-footer -->
-
-
-
-
-
-<div class="page-width is-empty" id="main-cart-footer" data-id="">
-  <div>
-    <div class="cart__footer">
-      
-        <cart-note class="cart__note field">
-          <label for="Cart-note"></label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder=""
-          ></textarea>
-        </cart-note>
-      
-
-      <div class="cart__blocks">
-        
-          
-            
-              
-            
-              <div class="js-contents" >
-                <div class="totals">
-                  <h2 class="totals__subtotal"></h2>
-                  <p class="totals__subtotal-value"></p>
-                </div>
-
-                <div>
-                  
-                    <ul class="discounts list-unstyled" role="list" aria-label="">
-                      
-                        <li class="discounts__discount discounts__discount--position">
-                          
-                          
-                          (-)
-                        </li>
-                      
-                    </ul>
-                  
-                </div>
-
-                <small class="tax-note caption-large rte">
-                  
-                    
-                  
-                    
-                  
-                    
-                  
-                    
-                  
-                </small>
-              </div>
-            
-              <div class="cart__ctas" >
-                <noscript>
-                  <button type="submit" class="cart__update-button button button--secondary" form="cart">
-                    
-                  </button>
-                </noscript>
-
-                <button
-                  type="submit"
-                  id="checkout"
-                  class="cart__checkout-button button"
-                  name="checkout"
-                  
-                    disabled
-                  
-                  form="cart"
-                >
-                  
-                </button>
-              </div>
-
-              
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  
-                </div>
-              
-          
-        
-
-        <div id="cart-errors"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    function isIE() {
-      const ua = window.navigator.userAgent;
-      const msie = ua.indexOf('MSIE ');
-      const trident = ua.indexOf('Trident/');
-
-      return msie > 0 || trident > 0;
-    }
-
-    if (!isIE()) return;
-    const cartSubmitInput = document.createElement('input');
-    cartSubmitInput.setAttribute('name', 'checkout');
-    cartSubmitInput.setAttribute('type', 'hidden');
-    document.querySelector('#cart').appendChild(cartSubmitInput);
-    document.querySelector('#checkout').addEventListener('click', function (event) {
-      document.querySelector('#cart').submit();
-    });
-  });
-</script>
-
-
-{
-  "name": "t:sections.main-cart-footer.name",
-  "class": "cart__footer-wrapper",
-  "blocks": [
-    {
-      "type": "subtotal",
-      "name": "t:sections.main-cart-footer.blocks.subtotal.name",
-      "limit": 1
-    },
-    {
-      "type": "buttons",
-      "name": "t:sections.main-cart-footer.blocks.buttons.name",
-      "limit": 1
-    },
-    {
-      "type": "@app"
-    }
-  ]
-}
-
-
-<!-- TODO: Dynamic loop/conditional replaced by static fallback. -->
-
-<!-- TODO: Cart interactions are stubbed for static build. -->
 <style>
 {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ body_font_bold | font_face: font_display: 'swap' }}
