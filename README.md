@@ -24,3 +24,11 @@ Assets copied: 101
 ### Included scaffold
 - `products.json` (sample data, PKR)
 - `products.html` (client-side grid renderer)
+
+
+## Added features
+- Shared sticky header with live cart count
+- Products listing with search, category filter, and sorting
+- Product detail page (`product.html?id=...`)
+- LocalStorage cart with update/remove and totals
+- WhatsApp and Email checkout handoff (configure your receiving WhatsApp number and email in `assets/shop.js`)

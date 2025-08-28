@@ -5,7 +5,13 @@
     "price": 1999,
     "currency": "PKR",
     "image": "assets/placeholder.svg",
-    "url": "#"
+    "url": "#",
+    "category": "General",
+    "tags": [
+      "sample"
+    ],
+    "description": "Sample description for Sample Product A",
+    "created_at": 1000000000
   },
   {
     "id": "sku-1002",
@@ -13,7 +19,13 @@
     "price": 2999,
     "currency": "PKR",
     "image": "assets/placeholder.svg",
-    "url": "#"
+    "url": "#",
+    "category": "General",
+    "tags": [
+      "sample"
+    ],
+    "description": "Sample description for Sample Product B",
+    "created_at": 1000000001
   },
   {
     "id": "sku-1003",
@@ -21,6 +33,12 @@
     "price": 1499,
     "currency": "PKR",
     "image": "assets/placeholder.svg",
-    "url": "#"
+    "url": "#",
+    "category": "General",
+    "tags": [
+      "sample"
+    ],
+    "description": "Sample description for Sample Product C",
+    "created_at": 1000000002
   }
 ]
