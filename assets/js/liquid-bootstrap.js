@@ -28,12 +28,18 @@ function getLiquidCtor() {
 // Handles whitespace-trim variants ({%- tag -%}).
 function preprocessLiquid(source) {
   return source
+    // Shopify-only block tags → plain HTML
     .replace(/{%[-\s]*style[-\s]*%}/g, "<style>")
     .replace(/{%[-\s]*endstyle[-\s]*%}/g, "</style>")
     .replace(/{%[-\s]*javascript[-\s]*%}/g, "<script>")
     .replace(/{%[-\s]*endjavascript[-\s]*%}/g, "</script>")
+    // NEW: neutralize Shopify {% form %} blocks
+    .replace(/{%[-\s]*form\b[^%]*%}/g, '<form data-shopify-form="stub">')
+    .replace(/{%[-\s]*endform[-\s]*%}/g, "</form>")
+    // Remove Shopify editor schema blocks entirely
     .replace(/{%[-\s]*schema[-\s]*%}[\s\S]*?{%[-\s]*endschema[-\s]*%}/g, "");
 }
+
 
 // -------- blocks normalizer -------------------------------------------------
 function normalizeBlocks(blocks) {
