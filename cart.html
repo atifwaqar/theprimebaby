@@ -6,24 +6,552 @@
   <title>Cart — Your Store</title>
   <meta name="description" content="A self-contained static storefront (no Shopify/WordPress). Products from JSON, cart in localStorage, checkout handoff via WhatsApp/Email.">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="assets/theme/css/styles.css">
-  <link rel="stylesheet" href="assets/theme/css/lightbox.min.css">
+  <link rel="stylesheet" href="assets/theme/css/base.css">
+  <link rel="stylesheet" href="assets/theme/css/component-card.css">
+  <link rel="stylesheet" href="assets/theme/css/section-footer.css">
+  <link rel="stylesheet" href="assets/theme/css/template-collection.css">
+  <link rel="stylesheet" href="assets/theme/css/section-main-product.css">
+  <link rel="stylesheet" href="assets/theme/css/component-price.css">
+  <link rel="stylesheet" href="assets/theme/css/component-rating.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      .container, .page-width { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+      header a { text-decoration: none; }
+    </style>
+    
 </head>
 <body>
-<header class="topbar">
-  <div class="container flex-between">
-    <a href="index.html" class="brand"><img src="assets/img/logo.png" alt="Store Logo" style="height:28px"></a>
-    <nav class="nav">
-      <a href="products.html">Products</a>
-      <a href="cart.html" class="cart-link">
-        <span id="cart-count" class="badge">0</span> Cart
+<link rel="stylesheet" href="" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="" media="print" onload="this.media='all'">
+  <noscript></noscript>
+<noscript></noscript>
+<noscript></noscript>
+<noscript></noscript>
+<noscript></noscript>
+<noscript></noscript>
+<style>
+    .scrolled-past-header .header__heading-logo-wrapper {
+      width: 75%;
+    }
+    @media screen and (min-width: 990px) {
+      header-drawer {
+        display: none;
+      }
+    }
+  .menu-drawer-container {
+    display: flex;
+  }
+  .list-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .list-menu--inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+  summary.list-menu__item {
+    padding-right: 2.7rem;
+  }
+  .list-menu__item {
+    display: flex;
+    align-items: center;
+    line-height: calc(1 + 0.3 / var(--font-body-scale));
+  }
+  .list-menu__item--link {
+    text-decoration: none;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    line-height: calc(1 + 0.8 / var(--font-body-scale));
+  }
+  @media screen and (min-width: 750px) {
+    .list-menu__item--link {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
+</style>
+  .header {
+    padding-top: px;
+    padding-bottom: px;
+  }
+  .section-header {
+    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    margin-bottom: px;
+    z-index: 3;
+  }
+  @media screen and (min-width: 750px) {
+    .section-header {
+      margin-bottom: px;
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .header {
+      padding-top: px;
+      padding-bottom: px;
+    }
+  }
+<script src="" defer="defer"></script>
+<script src="" defer="defer"></script>
+<script src="" defer="defer"></script>
+<script src="" defer="defer"></script>
+  <script src="" defer="defer"></script>
+  <script src="" defer="defer"></script>
+<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+  <symbol id="icon-search" viewbox="0 0 18 19" fill="none">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-reset" class="icon icon-close"  fill="none" viewBox="0 0 18 18" stroke="currentColor">
+    <circle r="8.5" cy="9" cx="9" stroke-opacity="0.2"/>
+    <path d="M6.82972 6.82915L1.17193 1.17097" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 5)"/>
+    <path d="M1.22896 6.88502L6.77288 1.11523" stroke-linecap="round" stroke-linejoin="round" transform="translate(5 5)"/>
+  </symbol>
+  <symbol id="icon-close" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+    <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
+  </symbol>
+</svg>
+<
+      <details-modal class="header__search">
+        <details>
+          <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="">
+            <span>
+              <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false">
+                <use href="#icon-search">
+              </svg>
+              <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false">
+                <use href="#icon-close">
+              </svg>
+            </span>
+          </summary>
+          <div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="">
+            <div class="modal-overlay"></div>
+            <div class="search-modal__content
+                <predictive-search class="search-modal__form">
+                <search-form class="search-modal__form">
+                  <form action="" method="get" role="search" class="search search-modal__form">
+                    <div class="field">
+                      <input class="search__input field__input"
+                        id="Search-In-Modal-1"
+                        type="search"
+                        name="q"
+                        value=""
+                        placeholder=""
+                          role="combobox"
+                          aria-expanded="false"
+                          aria-owns="predictive-search-results"
+                          aria-controls="predictive-search-results"
+                          aria-haspopup="listbox"
+                          aria-autocomplete="list"
+                          autocorrect="off"
+                          autocomplete="off"
+                          autocapitalize="off"
+                          spellcheck="false"
+                      >
+                      <label class="field__label" for="Search-In-Modal-1"></label>
+                      <input type="hidden" name="options[prefix]" value="last">
+                      <button type="reset" class="reset__button field__button
+                      <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                        <div class="predictive-search__loading-state">
+                          <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </div>
+                      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                  </form>
+                </predictive-search>
+                </search-form>
+              <button type="button" class="modal__close-button link link--text focus-inset" aria-label="">
+                <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                  <use href="#icon-close">
+                </svg>
+              </button>
+            </div>
+          </div>
+        </details>
+      </details-modal>
+        <h1 class="header__heading">
+          <a href="" class="header__heading-link link link--text focus-inset">
+              <div class="header__heading-logo-wrapper">
+              <span class="h2"></span>
+          </a>
+        </h1>
+    <div class="search-modal__content
+        <predictive-search class="search-modal__form">
+        <search-form class="search-modal__form">
+          <form action="" method="get" role="search" class="search search-modal__form">
+            <div class="field">
+              <input class="search__input field__input"
+                id="Search-In-Modal"
+                type="search"
+                name="q"
+                value=""
+                placeholder=""
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+              >
+              <label class="field__label" for="Search-In-Modal"></label>
+              <input type="hidden" name="options[prefix]" value="last">
+              <button type="reset" class="reset__button field__button
+              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                <div class="predictive-search__loading-state">
+                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </div>
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+          </form>
+          </predictive-search>
+          </search-form>
+    </div>
+    <div class="header__icons
+          <localization-form class="small-hide medium-hide">
+              <div class="no-js-hidden">
+                <h2 class="visually-hidden" id="HeaderCountryLabel"></h2>
+              </div>
+          </localization-form>
+          <localization-form class="small-hide medium-hide">
+              <div class="no-js-hidden">
+                <h2 class="visually-hidden" id="HeaderLanguageLabel"></h2>
+              </div>
+          </localization-form>
+      </div> 
+      <details-modal class="header__search">
+        <details>
+          <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="">
+            <span>
+              <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false">
+                <use href="#icon-search">
+              </svg>
+              <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false">
+                <use href="#icon-close">
+              </svg>
+            </span>
+          </summary>
+          <div class="search-modal modal__content gradient" role="dialog" aria-modal="true" aria-label="">
+            <div class="modal-overlay"></div>
+            <div class="search-modal__content
+                <predictive-search class="search-modal__form">
+                <search-form class="search-modal__form">
+                  <form action="" method="get" role="search" class="search search-modal__form">
+                    <div class="field">
+                      <input class="search__input field__input"
+                        id="Search-In-Modal-1"
+                        type="search"
+                        name="q"
+                        value=""
+                        placeholder=""
+                          role="combobox"
+                          aria-expanded="false"
+                          aria-owns="predictive-search-results"
+                          aria-controls="predictive-search-results"
+                          aria-haspopup="listbox"
+                          aria-autocomplete="list"
+                          autocorrect="off"
+                          autocomplete="off"
+                          autocapitalize="off"
+                          spellcheck="false"
+                      >
+                      <label class="field__label" for="Search-In-Modal-1"></label>
+                      <input type="hidden" name="options[prefix]" value="last">
+                      <button type="reset" class="reset__button field__button
+                      <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                        <div class="predictive-search__loading-state">
+                          <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                          </svg>
+                        </div>
+                      </div>
+                      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                  </form>
+                </predictive-search>
+                </search-form>
+              <button type="button" class="modal__close-button link link--text focus-inset" aria-label="">
+                <svg class="icon icon-close" aria-hidden="true" focusable="false">
+                  <use href="#icon-close">
+                </svg>
+              </button>
+            </div>
+          </div>
+        </details>
+      </details-modal>
+       <div class="header__icon header__icon--account link focus-inset
+            <a href=""></a>
+            <a href=""></a> / <a href=""></a>
+          </span>
+        </div>
+        <div class="header__icon tm_header-dropdown site-header__icon">
+          <div class="user-background">
+            <div class="account">
+                <a href="">
+                </a>
+                <a href="">
+                </a>
+                  <a href="">
+                  </a>
+                  <a href="">
+                  </a>
+            <li class="cm-wishlist-button">
+              <a href=""
+                 class="cm-wishlist-icon js-popup-button"
+                
+                >
+                (<span class="counter">0</span>)
+              </a>
+             </li>
+            <li class="cm-compare-button">
+              <a href=""
+                 class="cm-compare-icon js-popup-button"
+                
+                >
+                (<span class="counter">0</span>)
+              </a>
+            </li>
+       <div class="header__icon cm-compare-button">
+           <a href=""
+            class="cm-compare-icon js-popup-button"
+           
+           >
+            <span class="icon-label">               
+      <div class="header__icon cm-wishlist-button">
+        <a href=""
+           class="cm-wishlist-icon js-popup-button"
+          
+          >
+          <span class="icon-label">   
+      <a href="" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+        <span class="visually-hidden"></span>
+          <div class="cart-count-bubble">
+              <span aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+          </div>
       </a>
-    </nav>
-  </div>
-</header>
+    </div>
+        <h1 class="header__heading">
+          <a href="" class="header__heading-link link link--text focus-inset">
+              <div class="header__heading-logo-wrapper">
+              <span class="h2"></span>
+          </a>
+        </h1>
+  </header>
+</
+<script>
+ $(document).ready(function() {
+  $(".user-background").click(function() {
+      $(".tm_header-dropdown .my-account").slideToggle();
+      $('.tm_header-dropdown').toggleClass('active')
+    });
+  });
+</script>
+<script>
+  function responsivecolumn(){
+    if ($(document).width() <= 989)
+      {
+        $('.header-top .header-top-inner .header-top-left .header__localization').appendTo('.header-bottom .header-bottom-inner');
+        $('.header-top  .header-top-inner .header-top-left .header-top__link').appendTo('#menu-drawer.main-menu .menu-drawer__navigation-container .menu-drawer__navigation');
+      }
+      else
+      {
+        $('.header-bottom .header-bottom-inner .header__localization').appendTo('.header-top .header-top-inner .header-top-left');
+        $('#menu-drawer.main-menu .menu-drawer__navigation-container .menu-drawer__navigation .header-top__link').prependTo('.header-top  .header-top-inner .header-top-left');
+      }
+  }
+  $(document).ready(function(){responsivecolumn();});
+  $(window).resize(function(){responsivecolumn();});
+</script>  
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "header-bottom-section section-header",
+  "settings": [
+    {
+      "type": "select",
+      "id": "logo_position",
+      "options": [
+        {
+          "value": "middle-left",
+          "label": "t:sections.header.settings.logo_position.options__1.label"
+        },
+        {
+          "value": "middle-center",
+          "label": "t:sections.header.settings.logo_position.options__4.label"
+        }
+      ],
+      "default": "middle-left",
+      "label": "t:sections.header.settings.logo_position.label",
+      "info": "t:sections.header.settings.logo_help.content"
+    },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.header.settings.sticky_header_type.options__1.label"
+        },
+        {
+          "value": "on-scroll-up",
+          "label": "t:sections.header.settings.sticky_header_type.options__2.label"
+        },
+        {
+          "value": "always",
+          "label": "t:sections.header.settings.sticky_header_type.options__3.label"
+        },
+        {
+          "value": "reduce-logo-size",
+          "label": "t:sections.header.settings.sticky_header_type.options__4.label"
+        }
+      ],
+      "default": "always",
+      "label": "t:sections.header.settings.sticky_header_type.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": false,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-2",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wishlist_icon",
+      "default": true,
+      "label": "t:settings_schema.global.settings.enable_wishlist_icon.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_compare_icon",
+      "default": true,
+      "label": "t:settings_schema.global.settings.enable_compare_icon.label"
+    },
+    {
+      "type": "text",
+      "id": "wishlist_title",
+      "default": "Wishlist",
+      "label": "t:sections.header.settings.wishlist_title.label"
+    },
+    {
+        "type": "url",
+        "id": "wishlist_link",
+        "label": "t:sections.header.settings.wishlist_link.label"
+    },
+    {
+      "type": "text",
+      "id": "compare_title",
+      "default": "Compare",
+      "label": "t:sections.header.settings.compare_title.label"
+    },
+    {
+        "type": "url",
+        "id": "compare_link",
+        "label": "t:sections.header.settings.compare_link.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.mobile_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "mobile_logo_position",
+      "options": [
+        {
+          "value": "center",
+          "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
+        },
+        {
+          "value": "left",
+          "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
+        }
+      ],
+      "default": "center",
+      "label": "t:sections.header.settings.mobile_logo_position.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.header.settings.margin_bottom.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 23
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 23
+    }
+  ]
+}
+{% endschema %}
 <main class="container">
 
 <section class="section">
@@ -45,11 +573,500 @@
 </section>
 
 </main>
-<footer class="footer">
-  <div class="container">
-    <p>&copy; 2025 Your Store — Static shop on GitHub Pages. No Shopify/WordPress.</p>
+  .footer {
+    margin-top: px;
+  }
+  .section--padding {
+    padding-top: px;
+    padding-bottom: px;
+  }
+  @media screen and (min-width: 990px) {
+    .footer {
+      margin-top: px;
+    }
+    .section--padding {
+      padding-top: px;
+      padding-bottom: px;
+    }
+  }
+<footer class="footer color- gradient section--padding">
+      <div class="footer__content-top page-width">
+          <div class="footer__blocks-wrapper grid grid--1-col grid--2-col grid--4-col-tablet ">
+                <div class="accordion">
+                  <details>
+                    <summary>
+                      <h2 class="footer-block__heading accordion__title"></h2>
+                        <ul class="footer-block__details-content list-unstyled">
+                            <li>
+                              <a
+                                href=""
+                                class="link link--text list-menu__item list-menu__item--link
+                        </ul>
+                      <div class="footer-block__details-content rte">
+                      </div>
+                      <a href="" class="email list-menu__item--link" target="_Self">
+                      </a>
+                      <li class="contact list-menu__item--link">
+                        <span></span>
+                      </li>
+                        <li class="contact_info list-menu__item--link">
+              <div
+                class="footer-block grid__item
+                  <h2 class="footer-block__heading inline-richtext"></h2>
+                    <div class="footer-block__details-content list-menu__item--link rte">
+                    </div>
+                    <a href="" class="email list-menu__item--link" target="_Self">
+                    </a>
+                      <a href="" class="contact list-menu__item--link" target="_Self">
+                      </a>
+                      <li class="contact_info list-menu__item--link">
+                      <ul class="footer-block__details-content list-unstyled">
+                          <li>
+                            <a
+                              href=""
+                              class="link link--text list-menu__item list-menu__item--link
+                      </ul>
+                    <div class="footer-block__brand-info">
+                        <div
+                          class="footer-block__image-wrapper global-media-settings"
+                          style="max-width: min(100%, px);"
+                        >
+                        </div>
+                        <h2 class="footer-block__heading rte"></h2>
+                        <div class="rte"></div>
+                    </div>
+                    <div class="footer-block__details-content footer-block-image ">
+                        <div
+                          class="footer-block__image-wrapper global-media-settings"
+                          style="max-width: min(100%, px);"
+                        >
+                          <img
+                            srcset=",  2x"
+                            src=""
+                            alt=""
+                            loading="lazy"
+                            width=""
+                            height=""
+                          >
+                        </div>
+                    </div>
+              </div>
+            <div class="footer-block--newsletter grid__item">
+                <div class="footer-block__newsletter">
+                    <h2 class="footer-block__heading inline-richtext"></h2>
+                    <div></div>
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <div class="newsletter-form__field-wrapper">
+                      <div class="field">
+                        <input
+                          id="NewsletterForm--"
+                          type="email"
+                          name="contact[email]"
+                          class="field__input"
+                          value=""
+                          aria-required="true"
+                          autocorrect="off"
+                          autocapitalize="off"
+                          autocomplete="email"
+                        <small class="newsletter-form__message form__message" id="ContactFooter-error">
+                        </small>
+                    </div>
+                      <h3
+                        class="newsletter-form__message newsletter-form__message--success form__message"
+                        id="ContactFooter-success"
+                        tabindex="-1"
+                        autofocus
+                      >
+                      </h3>
+            </div>
+          </div>
+          <div class="footer__follow-on-shop">
+      </div>
+  <div class="footer__content-bottom">
+    <div class="footer__content-bottom-wrapper page-width">
+      <div class="footer__column footer__localization isolate">
+          <noscript>
+              <div class="localization-form__select">
+                <h2 class="visually-hidden" id="FooterCountryLabelNoScript"></h2>
+                <select
+                  class="localization-selector link"
+                  name="country_code"
+                  aria-labelledby="FooterCountryLabelNoScript"
+                >
+                    <option
+                      value=""
+                </select>
+          </noscript>
+          <localization-form>
+              <div class="no-js-hidden">
+                <h2 class="caption-large text-body" id="FooterCountryLabel"></h2>
+              </div>
+          </localization-form>
+          <noscript>
+              <div class="localization-form__select">
+                <h2 class="visually-hidden" id="FooterLanguageLabelNoScript">
+                </h2>
+                <select
+                  class="localization-selector link"
+                  name="locale_code"
+                  aria-labelledby="FooterLanguageLabelNoScript"
+                >
+                    <option
+                      value=""
+                      lang=""
+                </select>
+          </noscript>
+          <localization-form>
+              <div class="no-js-hidden">
+                <h2 class="caption-large text-body" id="FooterLanguageLabel">
+                </h2>
+              </div>
+          </localization-form>
+      </div>
+      <div class="footer__content-bottom-wrapper page-width
+            <ul class="policies list-unstyled">
+                  <li>
+                    <small class="copyright__content"
+                      ><a href=""></a></small
+                    >
+                  </li>
+            </ul>
+        </div>
+      </div>
+      <div class="footer__column footer__column--info">
+          <div class="footer__payment">
+            <span class="visually-hidden"></span>
+            <ul class="list list-payment" role="list">
+                <li class="list-payment__item">
+                </li>
+            </ul>
+          </div>
+      </div>
+    </div>
   </div>
 </footer>
+  <script src="" defer="defer"></script>
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "link_list",
+      "name": "t:sections.footer.blocks.link_list.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "About Our Store",
+          "label": "t:sections.footer.blocks.link_list.settings.heading.label"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+          "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+        }
+      ]
+    },
+    {
+      "type": "brand_information",
+      "name": "t:sections.footer.blocks.brand_information.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.footer.blocks.brand_information.settings.paragraph.content"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.footer.blocks.brand_information.settings.header__1.content"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "default": true,
+          "label": "t:sections.footer.blocks.brand_information.settings.show_social.label",
+          "info": "t:sections.footer.blocks.brand_information.settings.show_social.info"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.footer.blocks.text.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Contact Us",
+          "label": "t:sections.footer.blocks.text.settings.heading.label"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Majori - Fashion Store</p><p>507-Union Trade Ipsum Doler</p><p>Centre France</p>",
+          "label": "t:sections.footer.blocks.text.settings.subtext.label"
+        },
+        {
+          "type": "text",
+          "id": "email_address",
+		  "label": "t:sections.footer.blocks.text.settings.email_address.label",
+          "default": "hello@blocks.com"
+        },
+		{
+          "type": "url",
+          "id": "email",
+          "label": "t:sections.footer.blocks.text.settings.email.label"
+        },
+        {
+          "type": "text",
+          "id": "contact_num",
+          "label": "t:sections.footer.blocks.text.settings.contact_num.label",
+          "default": "+81 520-150-001"
+        },
+        {
+          "type": "url",
+          "id": "contact",
+          "label": "t:sections.footer.blocks.text.settings.contact.label"
+        },
+        {
+          "type": "richtext",
+          "id": "contact_info",
+          "default": "<p>Online Chat Get Expert Help</p>",
+          "label": "t:sections.footer.blocks.text.settings.contact_info.label"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 50,
+          "max": 550,
+          "step": 5,
+          "unit": "px",
+          "label": "Image width",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Image alignment on large screen",
+          "options": [
+            {
+              "value": "",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__1.content",
+      "info": "t:sections.footer.settings.header__1.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "newsletter_enable",
+      "default": true,
+      "label": "t:sections.footer.settings.newsletter_enable.label"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "newsletter_heading",
+      "label": "t:sections.footer.settings.newsletter_heading.label"
+    },
+     {
+      "type": "inline_richtext",
+      "id": "newsletter_text",
+      "label": "t:sections.footer.settings.newsletter_heading.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_icon_1",
+      "label": "t:sections.newsletter.settings.app_icon_1.label"
+    },
+	{
+      "type": "url",
+      "id": "app_link_1",
+      "label": "t:sections.newsletter.settings.app_link_1.label"
+    },
+	{
+      "type": "image_picker",
+      "id": "app_icon_2",
+      "label": "t:sections.newsletter.settings.app_icon_2.label"
+    },
+	{
+      "type": "url",
+      "id": "app_link_2",
+      "label":"t:sections.newsletter.settings.app_link_2.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__9.content",
+      "info": "t:sections.footer.settings.header__9.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_follow_on_shop",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_follow_on_shop.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__2.content",
+      "info": "t:sections.footer.settings.header__2.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": true,
+      "label": "t:sections.footer.settings.show_social.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__3.content",
+      "info": "t:sections.footer.settings.header__4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "t:sections.footer.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__5.content",
+      "info": "t:sections.footer.settings.header__6.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "t:sections.footer.settings.enable_language_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__7.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "default": true,
+      "label": "t:sections.footer.settings.payment_enable.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__8.content",
+      "info": "t:sections.footer.settings.header__8.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy",
+      "default": false,
+      "label": "t:sections.footer.settings.show_policy.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer.settings.margin_top.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 11
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "link_list"
+      },
+      {
+        "type": "text"
+      }
+    ]
+  }
+}
+{% endschema %}
 <script src="js/store.js"></script>
 <script src="js/cart.js"></script>
 </body>

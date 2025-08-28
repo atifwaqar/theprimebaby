@@ -12,13 +12,16 @@ async function renderProduct(){
   const images = p.images && p.images.length ? p.images : ["assets/img/placeholder.png"];
   const price = STORE.formatPrice(p.price);
   container.innerHTML = `
-    <div class="pdp-images card">
+<section class="section-main-product page-width">
+  <div class="product product--medium">
+
+    <div class="product__media-wrapper card">
       <div class="main-img"><img id="mainImg" src="${images[0]}" alt="${escapeHtml(p.title)}"></div>
       <div class="thumb-row">
         ${images.map(src => `<div class="thumb" onclick="document.getElementById('mainImg').src='${src}'"><img src="${src}" alt=""></div>`).join("")}
       </div>
     </div>
-    <div class="card">
+    <div class="product__info-wrapper card">
       <h1>${escapeHtml(p.title)}</h1>
       <div class="price">${price}</div>
       <p>${escapeHtml(p.description)}</p>
@@ -28,6 +31,7 @@ async function renderProduct(){
       </div>
     </div>
   `;
+
 }
 function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
 function escapeAttr(s){ return (s||"").replace(/"/g, '&quot;'); }

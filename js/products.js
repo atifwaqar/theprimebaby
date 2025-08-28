@@ -28,22 +28,37 @@ async function renderProductsPage(){
   grid.innerHTML = filtered.map(cardHtml).join("");
 }
 
+
 function cardHtml(p){
   const price = STORE.formatPrice(p.price);
   const img = (p.images && p.images[0]) || "assets/img/placeholder.png";
   return `
-  <article class="product-card card">
-    <a class="imgbox" href="product.html?id=${encodeURIComponent(p.id)}">
-      <img src="${img}" alt="${escapeHtml(p.title)}">
-    </a>
-    <h3><a href="product.html?id=${encodeURIComponent(p.id)}">${escapeHtml(p.title)}</a></h3>
-    <p>${escapeHtml(p.description)}</p>
-    <div class="price">${price}</div>
-    <div class="controls">
-      <button class="btn" onclick='location.href="product.html?id=${encodeURIComponent(p.id)}"'>View</button>
-      <button class="btn btn-primary" onclick='STORE.addToCart({id:"${p.id}", title:"${escapeAttr(p.title)}", price:${p.price}, image:"${img}"})'>Add</button>
+  <div class="card-wrapper product-card-wrapper">
+    <div class="card card--product">
+      <div class="card__inner color-background-2 gradient ratio">
+        <div class="card__media">
+          <div class="media media--transparent media--portrait">
+            <a href="product.html?id=${encodeURIComponent(p.id)}" class="full-unstyled-link">
+              <img class="motion-reduce" src="${img}" alt="${escapeHtml(p.title)}" loading="lazy">
+            </a>
+          </div>
+        </div>
+        <div class="card__content">
+          <div class="card__information">
+            <h3 class="card__heading h5">
+              <a href="product.html?id=${encodeURIComponent(p.id)}" class="full-unstyled-link">${escapeHtml(p.title)}</a>
+            </h3>
+            <div class="card-information">
+              <span class="price-item price-item--regular">${price}</span>
+            </div>
+          </div>
+          <div class="quick-add no-js-hidden">
+            <button class="btn btn--primary" onclick='STORE.addToCart({id:"${p.id}", title:"${escapeAttr(p.title)}", price:${p.price}, image:"${img}"})'>Add to cart</button>
+          </div>
+        </div>
+      </div>
     </div>
-  </article>`;
+  </div>`;
 }
 
 function escapeHtml(s){ return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
