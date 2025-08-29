@@ -65,62 +65,37 @@
     }
   }
 
-  function renderList(containerSel, templateId, items, limit) {
-    const container = qs(containerSel);
-    const tplEl = document.getElementById(templateId);
-    if (!container || !tplEl) return;
-    const raw = tplEl.innerHTML;
-    const frag = document.createDocumentFragment();
-    (limit ? items.slice(0, limit) : items).forEach((item) => {
-      frag.appendChild(htmlToNodes(tpl(raw, item)));
-    });
+  function renderList(containerOrSelector, templateId, items, limit) {
+  const container = (typeof containerOrSelector === 'string') ? qs(containerOrSelector) : containerOrSelector;
+  if (!container) return;
+  let tplEl = document.getElementById(templateId);
+
+  // Allow per-grid template override via data-template and local <template> elements.
+  const gridTplId = container.getAttribute('data-template');
+  if (gridTplId) {
+    const el = document.getElementById(gridTplId);
+    if (el) tplEl = el;
+  }
+  if (!tplEl) {
+    // Try to find a <template> sibling/descendant if no global ID is given
+    const localTpl = container.parentElement && container.parentElement.querySelector('template');
+    if (localTpl) tplEl = localTpl;
+  }
+  if (!tplEl) return;
+  const raw = tplEl.innerHTML;
+
+  const frag = document.createDocumentFragment();
+  (limit ? items.slice(0, limit) : items).forEach((item) => {
+    frag.appendChild(htmlToNodes(tpl(raw, item)));
+  });
+  container.innerHTML = '';
+  container.appendChild(frag);
+});
     container.innerHTML = '';
     container.appendChild(frag);
   }
 
-  
-function isOnSale(p) {
-  return p.compare_at_price != null && p.compare_at_price > p.price;
-}
-
-function selectProducts(all, filterStr) {
-  if (!filterStr) return all;
-  const [key, rawVal] = filterStr.split(':');
-  const val = rawVal?.trim();
-
-  switch (key) {
-    case 'badge':
-      return all.filter(p => (p.badges || []).includes(val));
-    case 'category':
-      return all.filter(p => (p.categories || []).includes(val));
-    case 'tag':
-      return all.filter(p => (p.tags || []).includes(val));
-    case 'sale':
-      return all.filter(isOnSale);
-    case 'latest': {
-      const days = parseInt(val || '30', 10);
-      const cutoff = Date.now() - days * 864e5;
-      return all.filter(p => p.created_at && new Date(p.created_at).getTime() >= cutoff);
-    }
-    default:
-      return all;
-  }
-}
-
-function sortProducts(items, sortStr) {
-  switch (sortStr) {
-    case 'newest':
-      return items.sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0));
-    case 'price-asc':
-      return items.sort((a,b) => a.price - b.price);
-    case 'price-desc':
-      return items.sort((a,b) => b.price - a.price);
-    default:
-      return items;
-  }
-}
-
-async function main() {
+  async function main() {
     const [products, categories, site] = await Promise.all([
       loadJSON('./products.json').catch(() => []),
       loadJSON('./categories.json').catch(() => []),
@@ -131,24 +106,18 @@ async function main() {
 
     // normalize products for template placeholders
     const enrichedProducts = (Array.isArray(products) ? products : []).map((p) => ({
-  ...p,
-  url: p.url || '#',
-  image: (Array.isArray(p.images) && p.images.length) ? p.images[0] : 'data:image/gif;base64,R0lGODlhAQABAAAAACw=',
-  price_formatted: formatPrice(p.price, p.currency),
-  compare_at_price_formatted: isOnSale(p) ? formatPrice(p.compare_at_price, p.currency) : ""
-}));
+      ...p,
+      url: p.url || '#',
+      image: (Array.isArray(p.images) && p.images.length) ? p.images[0] : 'data:image/gif;base64,R0lGODlhAQABAAAAACw=',
+      price_formatted: formatPrice(p.price, p.currency),
+      handle: p.slug || p.id || ''
+    }));
 
-    // Render every products grid independently
-qsa('[data-products-grid]').forEach((grid) => {
-  const filter = grid.getAttribute('data-filter'); // e.g., "badge:featured", "sale", "category:skincare"
-  const sort   = grid.getAttribute('data-sort');   // e.g., "newest", "price-asc"
-  const limit  = parseInt(grid.getAttribute('data-limit') || '0', 10) || undefined;
-
-  let items = selectProducts(enrichedProducts, filter);
-  items = sortProducts(items, sort);
-
-  renderList('[data-products-grid]', 'product-card-template', items, limit);
-});
+    const prodContainer = qs('[data-products-grid]');
+    if (prodContainer) {
+      const limit = parseInt(prodContainer.getAttribute('data-limit') || '0', 10) || undefined;
+      renderList('[data-products-grid]', 'product-card-template', enrichedProducts, limit);
+    }
 
     // categories
     const enrichedCats = (Array.isArray(categories) ? categories : []).map((c) => ({
@@ -166,3 +135,15 @@ qsa('[data-products-grid]').forEach((grid) => {
 
   document.addEventListener('DOMContentLoaded', main);
 })();
+
+// Render every categories grid independently
+qsa('[data-categories-grid]').forEach((grid) => {
+  const limit  = parseInt(grid.getAttribute('data-limit') || '0', 10) || undefined;
+  const tplId  = grid.getAttribute('data-template') || 'category-card-template';
+  renderList(grid, tplId, (Array.isArray(categories) ? categories : []).map((c) => ({
+    ...c,
+    title: c.name || c.title || c.id,
+    url: c.url || `#cat-${c.slug || c.id || ''}`,
+    image: c.image || 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
+  })), limit);
+});
