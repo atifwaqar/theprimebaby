@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Shopstic \u2014 Home"
+  },
+  "nav": {
+    "logoText": "4D Cosmetics",
+    "items": [
+      {
+        "label": "Home",
+        "url": "#"
+      },
+      {
+        "label": "Shop",
+        "url": "#"
+      },
+      {
+        "label": "Contact",
+        "url": "#"
+      }
+    ]
+  },
+  "hero": {
+    "title": "Just Dropped",
+    "subtitle": "Fresh picks you\u2019ll love",
+    "cta": {
+      "label": "Shop now"
+    }
+  },
+  "featured": {
+    "title": "Featured Products"
+  },
+  "collections": {
+    "title": "Shop by Category"
+  },
+  "footer": {
+    "title": "Stay in touch",
+    "blurb": "Beauty deals & updates.",
+    "copyright": "4D Cosmetics"
+  }
+}

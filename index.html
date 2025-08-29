@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-site-key="seo.title">Shopstic Demo</title>
+
+  <!-- THEME CSS (kept intact, local) -->
+  <link rel="stylesheet" href="assets/base.css"/><link rel="stylesheet" href="assets/collage.css"/><link rel="stylesheet" href="assets/collapsible-content.css"/><link rel="stylesheet" href="assets/component-accordion.css"/><link rel="stylesheet" href="assets/component-article-card.css"/><link rel="stylesheet" href="assets/component-card.css"/><link rel="stylesheet" href="assets/component-cart-drawer.css"/><link rel="stylesheet" href="assets/component-cart-items.css"/><link rel="stylesheet" href="assets/component-cart-notification.css"/><link rel="stylesheet" href="assets/component-cart.css"/><link rel="stylesheet" href="assets/component-collection-hero.css"/><link rel="stylesheet" href="assets/component-complementary-products.css"/><link rel="stylesheet" href="assets/component-deferred-media.css"/><link rel="stylesheet" href="assets/component-discounts.css"/><link rel="stylesheet" href="assets/component-facets.css"/><link rel="stylesheet" href="assets/component-image-with-text.css"/><link rel="stylesheet" href="assets/component-list-menu.css"/><link rel="stylesheet" href="assets/component-list-payment.css"/><link rel="stylesheet" href="assets/component-list-social.css"/><link rel="stylesheet" href="assets/component-loading-overlay.css"/><link rel="stylesheet" href="assets/component-localization-form.css"/><link rel="stylesheet" href="assets/component-mega-menu.css"/><link rel="stylesheet" href="assets/component-menu-drawer.css"/><link rel="stylesheet" href="assets/component-modal-video.css"/><link rel="stylesheet" href="assets/component-model-viewer-ui.css"/><link rel="stylesheet" href="assets/component-newsletter.css"/><link rel="stylesheet" href="assets/component-pagination.css"/><link rel="stylesheet" href="assets/component-pickup-availability.css"/><link rel="stylesheet" href="assets/component-predictive-search.css"/><link rel="stylesheet" href="assets/component-price.css"/><link rel="stylesheet" href="assets/component-product-model.css"/><link rel="stylesheet" href="assets/component-rating.css"/><link rel="stylesheet" href="assets/component-search.css"/><link rel="stylesheet" href="assets/component-show-more.css"/><link rel="stylesheet" href="assets/component-slider.css"/><link rel="stylesheet" href="assets/component-slideshow.css"/><link rel="stylesheet" href="assets/component-totals.css"/><link rel="stylesheet" href="assets/customer.css"/><link rel="stylesheet" href="assets/logo-bar.css"/><link rel="stylesheet" href="assets/newsletter-section.css"/><link rel="stylesheet" href="assets/owl.carousel.css"/><link rel="stylesheet" href="assets/product_tab.css"/><link rel="stylesheet" href="assets/quick-add.css"/><link rel="stylesheet" href="assets/section-blog-post.css"/><link rel="stylesheet" href="assets/section-collection-list.css"/><link rel="stylesheet" href="assets/section-contact-form.css"/><link rel="stylesheet" href="assets/section-email-signup-banner.css"/><link rel="stylesheet" href="assets/section-featured-blog.css"/><link rel="stylesheet" href="assets/section-featured-product.css"/><link rel="stylesheet" href="assets/section-footer.css"/><link rel="stylesheet" href="assets/section-image-banner.css"/><link rel="stylesheet" href="assets/section-main-blog.css"/><link rel="stylesheet" href="assets/section-main-page.css"/><link rel="stylesheet" href="assets/section-main-product.css"/><link rel="stylesheet" href="assets/section-mobile-menu.css"/><link rel="stylesheet" href="assets/section-multicolumn.css"/><link rel="stylesheet" href="assets/section-password.css"/><link rel="stylesheet" href="assets/section-related-products.css"/><link rel="stylesheet" href="assets/section-rich-text.css"/><link rel="stylesheet" href="assets/section-service.css"/><link rel="stylesheet" href="assets/section-subbanners.css"/><link rel="stylesheet" href="assets/template-collection.css"/><link rel="stylesheet" href="assets/template-giftcard.css"/><link rel="stylesheet" href="assets/tm-notification-products.css"/><link rel="stylesheet" href="assets/video-section.css"/>
+</head>
+<body>
+
+  <!-- ===== Header (simple static shell; texts via site.json) ===== -->
+  <header class="section-header page-width" style="padding: 12px 0;">
+    <div class="header__inner" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <a class="header__logo h2" href="#" data-site-key="nav.logoText">Your Brand</a>
+      <nav class="header__nav">
+        <ul class="list-menu list-menu--inline" data-nav></ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page-width" style="margin-block: 24px;">
+
+    <!-- ===== HERO ===== -->
+    <section id="hero" class="image-banner" style="margin-bottom: 28px;">
+      <div class="banner">
+        <div class="banner__content" style="padding: 28px 20px; text-align:center;">
+          <h1 class="title" data-site-key="hero.title">Welcome</h1>
+          <p class="subtitle" data-site-key="hero.subtitle">Curated picks for you</p>
+          <a class="button" href="#featured-products" data-site-key="hero.cta.label">Shop now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURED PRODUCTS ===== -->
+    <section id="featured-products" class="collection">
+      <div class="collection__title title-wrapper"><h2 data-site-key="featured.title">Featured Products</h2></div>
+      <ul class="grid product-grid grid--2-col-tablet-down grid--4-col-desktop" data-products-grid data-limit="12"></ul>
+
+      <!-- Product card template (Shopstic/Dawn-style classes for CSS compatibility) -->
+      <template id="product-card-template">
+        <li class="grid__item slider__slide">
+          <div class="card-wrapper product-card-wrapper underline-links-hover">
+            <a class="full-unstyled-link" href="{url}">
+              <div class="card card--standard">
+                <div class="card__media">
+                  <div class="media media--transparent media--hover-effect">
+                    <img loading="lazy" src="{image}" alt="{title}" class="motion-reduce" style="width:100%;height:auto;"/>
+                  </div>
+                </div>
+                <div class="card__content">
+                  <div class="card__information">
+                    <h3 class="card__heading h5">{title}</h3>
+                    <div class="price price--end"><span class="price-item price-item--regular">{price_formatted}</span></div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </li>
+      </template>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section id="collections" class="collection-list" style="margin-top: 36px;">
+      <div class="collection__title title-wrapper"><h2 data-site-key="collections.title">Shop by Category</h2></div>
+      <ul class="grid grid--2-col-tablet-down grid--4-col-desktop" data-categories-grid data-limit="8"></ul>
+
+      <template id="category-card-template">
+        <li class="grid__item slider__slide">
+          <a class="card-wrapper full-unstyled-link" href="{url}">
+            <div class="card card--standard">
+              <div class="card__media">
+                <div class="media media--transparent">
+                  <img loading="lazy" src="{image}" alt="{title}" style="width:100%;height:auto;"/>
+                </div>
+              </div>
+              <div class="card__content">
+                <div class="card__information"><h3 class="card__heading h5">{title}</h3></div>
+              </div>
+            </div>
+          </a>
+        </li>
+      </template>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer section-footer" style="margin-top:48px;padding:24px 0;">
+    <div class="page-width" style="display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;">
+      <div><strong data-site-key="footer.title">Stay in touch</strong><div data-site-key="footer.blurb">Beauty deals & updates.</div></div>
+      <div><small>&copy; <span data-site-key="footer.copyright">Your Brand</span></small></div>
+    </div>
+  </footer>
+
+  <!-- Mapper (loads products.json, categories.json, site.json) -->
+  <script src="mapper.js" defer></script>
+</body>
+</html>
