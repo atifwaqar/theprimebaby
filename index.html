@@ -6109,4 +6109,89 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
 })();
 </script>
 
+
+<script>
+(function(){
+  // Replace the existing fill used in Featured with a stricter price writer
+  function writePrice(priceRoot, price, compare){
+    if (!priceRoot) return;
+    // Clear everything to avoid hidden remnants
+    while (priceRoot.firstChild) priceRoot.removeChild(priceRoot.firstChild);
+
+    // helper builders
+    function makeAmt(value){
+      const spanAmt = document.createElement('span');
+      spanAmt.className = 'woocommerce-Price-amount amount';
+      const bdi = document.createElement('bdi');
+      const cur = document.createElement('span');
+      cur.className = 'woocommerce-Price-currencySymbol';
+      cur.textContent = 'Rs';
+      bdi.appendChild(cur);
+      bdi.appendChild(document.createTextNode(' ' + Number(value||0).toLocaleString('en-PK')));
+      spanAmt.appendChild(bdi);
+      return spanAmt;
+    }
+
+    if (typeof compare === 'number' && compare > (price||0)){
+      const del = document.createElement('del');
+      del.setAttribute('aria-hidden', 'true');
+      del.appendChild(makeAmt(compare));
+      priceRoot.appendChild(del);
+      const sr1 = document.createElement('span'); sr1.className = 'screen-reader-text'; sr1.textContent = 'Original price.';
+      priceRoot.appendChild(sr1);
+    }
+
+    const ins = document.createElement('ins');
+    ins.setAttribute('aria-hidden', 'true');
+    ins.appendChild(makeAmt(price));
+    priceRoot.appendChild(ins);
+    const sr2 = document.createElement('span'); sr2.className = 'screen-reader-text'; sr2.textContent = 'Current price.';
+    priceRoot.appendChild(sr2);
+  }
+
+  function patchFeaturedPriceWriter(){
+    // Monkey-patch our renderFeatured's internal fillSlide if present
+    // Instead, hook after DOM is ready and rewrite prices in Featured list
+    const featured = Array.from(document.querySelectorAll('.elementor-heading-title, h4, .widget-title'))
+      .find(h => /featured\s+products/i.test(h.textContent||''));
+    const list = featured ? featured.closest('.splide')?.querySelector('ul.splide__list') : null;
+    if (!list) return;
+    list.querySelectorAll('li .product-details span.price').forEach(function(priceRoot){
+      const li = priceRoot.closest('li');
+      const titleA = li.querySelector('.woocommerce-loop-product__title a');
+      // Try to retrieve product data from attributes set earlier (aria-label holds name; link holds URL)
+      // We can't read the numeric values back, so re-run our computation if present on dataset
+      // As a fallback, parse from textContent if already there.
+      const insBdi = priceRoot.querySelector('ins bdi');
+      if (!insBdi || !/\d/.test(insBdi.textContent)){
+        // Use data-price attributes (we'll add them now in our renderer below)
+        const p = {
+          price: Number(li.getAttribute('data-price') || 0),
+          compare_at_price: (li.hasAttribute('data-compare')) ? Number(li.getAttribute('data-compare')||0) : undefined
+        };
+        writePrice(priceRoot, p.price, p.compare_at_price);
+      }
+    });
+  }
+
+  // Add data-price/data-compare to slides when we render them, by intercepting our own fillSlide
+  const _fillSlide = window.__featuredFillSlide;
+  if (!_fillSlide) {
+    // Define a global hookable function name our previous script will call if present
+    window.__featuredFillSlide = function(li, p, idx, total, prefix){
+      // Set data for price writer
+      if (p && typeof p.price !== 'undefined') li.setAttribute('data-price', p.price);
+      if (typeof p.compare_at_price === 'number') li.setAttribute('data-compare', p.compare_at_price);
+      // If our old fillSlide exists, call it; otherwise just update title & links minimally
+      if (typeof window.__oldFeaturedFillSlide === 'function') return window.__oldFeaturedFillSlide(li, p, idx, total, prefix);
+    };
+  }
+
+  // After DOM loads and our previous scripts run, patch prices
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(patchFeaturedPriceWriter, 80);
+  });
+})();
+</script>
+
 </body></html>
