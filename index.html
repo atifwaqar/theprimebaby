@@ -5968,4 +5968,145 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
 })();
 </script>
 
+
+<script>
+(function(){
+  function esc(s){return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fmt(n){ try { return Number(n||0).toLocaleString('en-PK'); } catch(e){ return n; } }
+  function findFeaturedCarousel(){
+    // Look for a section whose heading includes "Featured Products"
+    const candidates = Array.from(document.querySelectorAll('.splide')).filter(el => {
+      const h = el.querySelector('h4, .elementor-heading-title, .section-title, .widget-title');
+      return h && /featured\s+products/i.test(h.textContent || '');
+    });
+    if (candidates.length) {
+      const root = candidates[0];
+      const list = root.querySelector('ul.splide__list');
+      const base = list ? list.querySelector('li') : null;
+      return { root, list, base };
+    }
+    // Fallback: a UL with id containing "featured" or "splide" and a nearby heading
+    const list = document.querySelector('ul[id*="featured"], ul.splide__list[id*="06"], ul.splide__list[id*="07"]');
+    const base = list ? list.querySelector('li') : null;
+    return list ? { root: list.closest('.splide') || document, list, base } : null;
+  }
+
+  function fillSlide(li, p, idx, total, sliderPrefix){
+    const prefix = sliderPrefix || 'featured';
+    const liId = prefix + '-slide' + String(idx+1).padStart(2,'0');
+    li.id = liId;
+    li.setAttribute('aria-label', (idx+1)+' of '+total);
+
+    const a = li.querySelector('.product-thumbnail a.woocommerce-loop-image-link');
+    if(a){
+      a.href = p.url || '#';
+      a.setAttribute('aria-label', esc(p.name||p.title||''));
+    }
+    const titleA = li.querySelector('.woocommerce-loop-product__title a');
+    if(titleA){
+      titleA.href = p.url || '#';
+      titleA.textContent = p.name || p.title || '';
+    }
+
+    const mainImg = li.querySelector('.product-thumbnail img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail');
+    if(mainImg){
+      if (p.images && p.images[0]) mainImg.src = p.images[0];
+      mainImg.alt = p.name || p.title || '';
+      mainImg.removeAttribute('srcset'); mainImg.removeAttribute('sizes');
+    }
+    const secImg = li.querySelector('.product-thumbnail img.secondary-product-image');
+    if(secImg){
+      if (p.images && p.images[1]) { secImg.src = p.images[1]; }
+      else { secImg.remove(); }
+      secImg.removeAttribute('srcset'); secImg.removeAttribute('sizes');
+    }
+
+    const hasCompare = typeof p.compare_at_price === 'number' && p.compare_at_price > (p.price||0);
+    let badgeWrap = li.querySelector('.product-onsale');
+    if (hasCompare){
+      if(!badgeWrap){
+        badgeWrap = document.createElement('div');
+        badgeWrap.className = 'product-onsale';
+        const span = document.createElement('span'); span.className = 'onsale'; badgeWrap.appendChild(span);
+        const thumb = li.querySelector('.product-thumbnail'); if(thumb) thumb.prepend(badgeWrap);
+      }
+      const pct = Math.max(0, Math.round((1 - (p.price||0)/(p.compare_at_price||1))*100));
+      const span = badgeWrap.querySelector('.onsale') || document.createElement('span');
+      span.className = 'onsale'; span.textContent = '-' + pct + '%';
+      if (!badgeWrap.contains(span)) badgeWrap.appendChild(span);
+    } else if (badgeWrap){ badgeWrap.remove(); }
+
+    const priceRoot = li.querySelector('span.price');
+    if(priceRoot){
+      const nested = priceRoot.querySelector('span.price');
+      if(nested){ while(nested.firstChild) priceRoot.insertBefore(nested.firstChild, priceRoot.firstChild); nested.remove(); }
+
+      let ins = priceRoot.querySelector('ins'); if(!ins){ ins = document.createElement('ins'); priceRoot.appendChild(ins); }
+      let insBdi = ins.querySelector('.woocommerce-Price-amount bdi') || ins.querySelector('bdi');
+      if(!insBdi){
+        const spanAmt = document.createElement('span'); spanAmt.className = 'woocommerce-Price-amount amount';
+        insBdi = document.createElement('bdi'); spanAmt.appendChild(insBdi); ins.appendChild(spanAmt);
+      }
+      insBdi.innerHTML = '<span class="woocommerce-Price-currencySymbol">Rs</span> ' + esc(fmt(p.price));
+
+      let del = priceRoot.querySelector('del');
+      if(hasCompare){
+        if(!del){ del = document.createElement('del'); priceRoot.insertBefore(del, priceRoot.firstChild); }
+        let delBdi = del.querySelector('.woocommerce-Price-amount bdi') || del.querySelector('bdi');
+        if(!delBdi){
+          const spanAmt = document.createElement('span'); spanAmt.className = 'woocommerce-Price-amount amount';
+          delBdi = document.createElement('bdi'); spanAmt.appendChild(delBdi); del.appendChild(spanAmt);
+        }
+        delBdi.innerHTML = '<span class="woocommerce-Price-currencySymbol">Rs</span> ' + esc(fmt(p.compare_at_price));
+      } else if(del){ del.remove(); }
+    }
+
+    const btn = li.querySelector('.product-action-wrap a.add_to_cart_button');
+    if(btn){
+      btn.href = p.url || '#';
+      btn.setAttribute('aria-label', 'Select options for “' + (p.name||p.title||'') + '”');
+    }
+  }
+
+  async function renderFeatured(){
+    const found = findFeaturedCarousel();
+    if (!found || !found.list || !found.base) return;
+
+    let data=[];
+    try{
+      const res = await fetch('products.json', {cache:'no-store'});
+      data = await res.json();
+    }catch(e){ console.error('Failed to load products.json', e); return; }
+
+    const isFeatured = (p) => p && (
+      p.featured === true ||
+      (Array.isArray(p.badges) && p.badges.some(b => (b||'').toLowerCase() === 'featured')) ||
+      (Array.isArray(p.tags) && p.tags.some(t => (t||'').toLowerCase() === 'featured'))
+    );
+
+    let list = data.filter(isFeatured);
+    if (!list.length) list = data.slice(0, 12);
+
+    const total = Math.min(12, list.length);
+
+    // Reset list to just the base template
+    const { base } = found;
+    while(found.list.firstChild) found.list.removeChild(found.list.firstChild);
+    found.list.appendChild(base);
+
+    fillSlide(base, list[0], 0, total, 'featured');
+    for (let i = 1; i < total; i++) {
+      const clone = base.cloneNode(true);
+      fillSlide(clone, list[i], i, total, 'featured');
+      found.list.appendChild(clone);
+    }
+
+    // Trigger resize to let existing theme JS reevaluate layout (no extra CSS).
+    try { window.dispatchEvent(new Event('resize')); } catch(e){}
+  }
+
+  document.addEventListener('DOMContentLoaded', renderFeatured);
+})();
+</script>
+
 </body></html>
