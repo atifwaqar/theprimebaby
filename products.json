@@ -37,7 +37,8 @@
     ],
     "inStock": true,
     "sku": "004-28",
-    "url": "product.html?slug=004-28"
+    "url": "product.html?slug=004-28",
+    "featured": true
   },
   {
     "id": "004-80",
@@ -197,7 +198,8 @@
     ],
     "inStock": true,
     "sku": "055-4A",
-    "url": "product.html?slug=055-4a"
+    "url": "product.html?slug=055-4a",
+    "featured": true
   },
   {
     "id": "06-Apr",
@@ -357,7 +359,8 @@
     ],
     "inStock": true,
     "sku": "1019A-1",
-    "url": "product.html?slug=1019a-1"
+    "url": "product.html?slug=1019a-1",
+    "featured": true
   },
   {
     "id": "102A",
@@ -534,7 +537,8 @@
     ],
     "inStock": true,
     "sku": "1139LB",
-    "url": "product.html?slug=1139lb"
+    "url": "product.html?slug=1139lb",
+    "featured": true
   },
   {
     "id": "1142",
@@ -714,7 +718,8 @@
     ],
     "inStock": true,
     "sku": "12015-D",
-    "url": "product.html?slug=12015-d"
+    "url": "product.html?slug=12015-d",
+    "featured": true
   },
   {
     "id": "1208C",
