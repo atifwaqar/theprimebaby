@@ -29171,7 +29171,8 @@
     ],
     "inStock": true,
     "sku": "TPM-1198",
-    "url": "product.html?slug=tpm-1198"
+    "url": "product.html?slug=tpm-1198",
+    "featured": true
   },
   {
     "id": "TPM-1199",
@@ -29211,7 +29212,8 @@
     ],
     "inStock": true,
     "sku": "TPM-120",
-    "url": "product.html?slug=tpm-120"
+    "url": "product.html?slug=tpm-120",
+    "featured": true
   },
   {
     "id": "TPM-1200",
@@ -29291,7 +29293,8 @@
     ],
     "inStock": true,
     "sku": "TPM-1203",
-    "url": "product.html?slug=tpm-1203"
+    "url": "product.html?slug=tpm-1203",
+    "featured": true
   },
   {
     "id": "TPM-1204",
@@ -29431,7 +29434,8 @@
     ],
     "inStock": true,
     "sku": "TPM-1210",
-    "url": "product.html?slug=tpm-1210"
+    "url": "product.html?slug=tpm-1210",
+    "featured": true
   },
   {
     "id": "TPM-1211",
