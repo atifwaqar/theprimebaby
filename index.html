@@ -5893,4 +5893,89 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
 })();
 </script>
 
+
+<script>
+(function(){
+  function esc(s){ return (s||'').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function fPKR(n){ try{ return (Number(n||0)).toLocaleString('en-PK'); }catch(e){ return (n||0);} }
+  function liMarkup(p, idx, total){
+    const hasCompare = typeof p.compare_at_price === 'number' && p.compare_at_price > (p.price||0);
+    const pct = hasCompare ? Math.max(0, Math.round((1 - (p.price||0)/(p.compare_at_price||1))*100)) : 0;
+    const img1 = (p.images && p.images[0]) ? p.images[0] : '';
+    const img2 = (p.images && p.images[1]) ? p.images[1] : '';
+    const liId = 'splide05-slide' + String(idx+1).padStart(2,'0');
+    const aria = (idx+1) + ' of ' + total;
+    return `
+<li class="entry content-bg loop-entry product type-product instock sale shipping-taxable purchasable product-type-variable has-default-attributes cart-button-1 action-style-default product-hover-style1 image-hover-icon hover-right splide__slide" id="${liId}" role="group" aria-roledescription="slide" aria-label="${aria}" style="margin-right: 15px;">
+  <div class="product-thumbnail">
+    <a href="${esc(p.url||'#')}" class="woocommerce-loop-image-link woocommerce-LoopProduct-link woocommerce-loop-product__link product-has-hover-image" aria-label="${esc(p.name||p.title||'')}">
+      ${hasCompare ? `<div class="product-onsale">
+        <span aria-hidden="true" class="onsale ">-${pct}%</span>
+        <span class="screen-reader-text">Product on sale</span>
+      </div>`:''}
+      <img loading="lazy" decoding="async" width="300" height="300" src="${esc(img1)}"
+           class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="${esc(p.name||p.title||'')}">
+      ${img2 ? `<img loading="lazy" decoding="async" width="300" height="300" src="${esc(img2)}"
+           class="secondary-product-image attachment-woocommerce_thumbnail attachment-shop-catalog wp-post-image wp-post-image--secondary" alt="" title="">`:''}
+    </a>
+    <div class="product-actions">
+      <button class="woosw-btn woosw-btn-has-icon woosw-btn-icon-text" aria-label="Wishlist">
+        <span class="woosw-btn-icon woosw-icon-5"></span><span class="woosw-btn-text">Wishlist</span>
+      </button>
+      <button class="woosc-btn woosc-btn-has-icon woosc-btn-icon-text">
+        <span class="woosc-btn-icon woosc-icon-1"></span><span class="woosc-btn-text">Compare</span>
+      </button>
+      <button class="woosq-btn woosq-btn-has-icon woosq-btn-icon-text" data-effect="mfp-3d-unfold" data-context="default">
+        <span class="woosq-btn-icon woosq-icon-1"></span><span class="woosq-btn-text">Quick view</span>
+      </button>
+    </div>
+  </div>
+  <div class="product-details content-bg entry-content-wrap">
+    <h2 class="woocommerce-loop-product__title">
+      <a href="${esc(p.url||'#')}" class="woocommerce-LoopProduct-link-title woocommerce-loop-product__title_link">${esc(p.name||p.title||'')}</a>
+    </h2>
+    <div class="star-rating-block" style="display:none;"></div>
+    <span class="price">
+      <span class="price">
+        ${hasCompare ? `<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">Rs</span> ${fPKR(p.compare_at_price)}</bdi></span></del>
+        <span class="screen-reader-text">Original price.</span>`:''}
+        <ins aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">Rs</span> ${fPKR(p.price)}</bdi></span></ins>
+        <span class="screen-reader-text">Current price.</span>
+      </span>
+    </span>
+    <div class="product-action-wrap style-button">
+      <a href="${esc(p.url||'#')}" class="button product_type_variable add_to_cart_button default" aria-label="Select options for “${esc(p.name||p.title||'')}”" rel="nofollow">
+        <span class="add-to-cart-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="currentColor" version="1.1"><g id="surface1"><path d="M 14.527344 2.125 ..."></path></g></svg>
+        </span>
+        <span class="cart-text">Select options</span>
+      </a>
+    </div>
+  </div>
+</li>`;
+  }
+
+  async function renderLatest(){
+    const list = document.getElementById('splide05-list');
+    if(!list) return;
+    let data=[];
+    try{
+      const res = await fetch('products.json', {cache:'no-store'});
+      data = await res.json();
+    }catch(e){ console.error(e); return; }
+
+    const total = Math.min(12, data.length);
+    list.innerHTML = '';
+    for(let i=0;i<total;i++){
+      list.insertAdjacentHTML('beforeend', liMarkup(data[i], i, total));
+    }
+
+    // If Splide is present, refresh safely
+    try{ if(window.splide05 && list.closest('.splide')) window.splide05.refresh(); }catch(e){}
+  }
+  document.addEventListener('DOMContentLoaded', renderLatest);
+})();
+</script>
+
 </body></html>
