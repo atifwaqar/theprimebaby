@@ -6194,4 +6194,76 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
 })();
 </script>
 
+
+<script>
+(function(){
+  function writePrice(priceRoot, price, compare){
+    if (!priceRoot) return;
+    // wipe everything
+    while (priceRoot.firstChild) priceRoot.removeChild(priceRoot.firstChild);
+    function amt(value){
+      const spanAmt = document.createElement('span');
+      spanAmt.className = 'woocommerce-Price-amount amount';
+      const bdi = document.createElement('bdi');
+      const cur = document.createElement('span');
+      cur.className = 'woocommerce-Price-currencySymbol';
+      cur.textContent = 'Rs';
+      bdi.appendChild(cur);
+      bdi.appendChild(document.createTextNode(' ' + Number(value||0).toLocaleString('en-PK')));
+      spanAmt.appendChild(bdi);
+      return spanAmt;
+    }
+    if (typeof compare === 'number' && compare > (price||0)){
+      const del = document.createElement('del'); del.setAttribute('aria-hidden','true');
+      del.appendChild(amt(compare)); priceRoot.appendChild(del);
+      const sr1 = document.createElement('span'); sr1.className='screen-reader-text'; sr1.textContent='Original price.';
+      priceRoot.appendChild(sr1);
+    }
+    const ins = document.createElement('ins'); ins.setAttribute('aria-hidden','true');
+    ins.appendChild(amt(price)); priceRoot.appendChild(ins);
+    const sr2 = document.createElement('span'); sr2.className='screen-reader-text'; sr2.textContent='Current price.';
+    priceRoot.appendChild(sr2);
+  }
+
+  function norm(s){ return (s||'').toString().replace(/\s+/g,' ').trim().toLowerCase(); }
+
+  async function rewriteAllPrices(){
+    let data=[];
+    try{
+      const res = await fetch('products.json', {cache:'no-store'});
+      data = await res.json();
+    }catch(e){ console.error('Failed to load products.json', e); return; }
+
+    const map = new Map();
+    data.forEach(p => { map.set(norm(p.name||p.title), p); });
+
+    function rewriteIn(container){
+      if (!container) return;
+      container.querySelectorAll('li.entry.loop-entry.product').forEach(li => {
+        const titleA = li.querySelector('.woocommerce-loop-product__title a');
+        const key = norm(titleA ? titleA.textContent : '');
+        const p = map.get(key);
+        if (!p) return;
+        const priceRoot = li.querySelector('span.price');
+        writePrice(priceRoot, p.price, p.compare_at_price);
+      });
+    }
+
+    // Latest
+    const latestList = document.getElementById('splide05-list');
+    rewriteIn(latestList);
+
+    // Featured
+    const featuredHeading = Array.from(document.querySelectorAll('h4, .elementor-heading-title, .widget-title'))
+      .find(h => /featured\s+products/i.test(h.textContent||''));
+    const featuredList = featuredHeading ? featuredHeading.closest('.splide')?.querySelector('ul.splide__list') : null;
+    rewriteIn(featuredList);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(rewriteAllPrices, 120);
+  });
+})();
+</script>
+
 </body></html>
