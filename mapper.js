@@ -84,13 +84,10 @@
   if (!tplEl) return;
   const raw = tplEl.innerHTML;
 
-  const frag = document.createDocumentFragment();
-  (limit ? items.slice(0, limit) : items).forEach((item) => {
-    frag.appendChild(htmlToNodes(tpl(raw, item)));
-  });
-  container.innerHTML = '';
-  container.appendChild(frag);
-});
+    const frag = document.createDocumentFragment();
+    (limit ? items.slice(0, limit) : items).forEach((item) => {
+      frag.appendChild(htmlToNodes(tpl(raw, item)));
+    });
     container.innerHTML = '';
     container.appendChild(frag);
   }
@@ -133,17 +130,5 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', main);
+document.addEventListener('DOMContentLoaded', main);
 })();
-
-// Render every categories grid independently
-qsa('[data-categories-grid]').forEach((grid) => {
-  const limit  = parseInt(grid.getAttribute('data-limit') || '0', 10) || undefined;
-  const tplId  = grid.getAttribute('data-template') || 'category-card-template';
-  renderList(grid, tplId, (Array.isArray(categories) ? categories : []).map((c) => ({
-    ...c,
-    title: c.name || c.title || c.id,
-    url: c.url || `#cat-${c.slug || c.id || ''}`,
-    image: c.image || 'data:image/gif;base64,R0lGODlhAQABAAAAACw='
-  })), limit);
-});
