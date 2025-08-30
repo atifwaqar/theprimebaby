@@ -5905,4 +5905,67 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
 })();
 </script>
 
+
+<script>
+(function(){
+  // After the products render, square-crop all product thumbnails to 300x300 using a canvas (no extra CSS).
+  function coverCropToSquare(img, size){
+    const s = size || 300;
+    const canvas = document.createElement('canvas');
+    canvas.width = s; canvas.height = s;
+    const ctx = canvas.getContext('2d');
+    const iw = img.naturalWidth || img.width;
+    const ih = img.naturalHeight || img.height;
+    if (!iw || !ih) return;
+
+    // Compute cover crop
+    const ir = iw/ih;
+    const tr = 1; // square
+    let dw, dh, dx, dy;
+    if (ir > tr) {
+      // image is wider -> fit height, crop sides
+      dh = s;
+      dw = s * ir;
+      dx = -(dw - s)/2;
+      dy = 0;
+    } else {
+      // image is taller -> fit width, crop top/bottom
+      dw = s;
+      dh = s / ir;
+      dx = 0;
+      dy = -(dh - s)/2;
+    }
+    ctx.drawImage(img, dx, dy, dw, dh);
+    return canvas.toDataURL('image/jpeg', 0.9);
+  }
+
+  function squareAll(){
+    document.querySelectorAll('#splide05-list .product-thumbnail img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail').forEach(function(img){
+      if (img.dataset.squared === '1') return;
+      if (!img.complete || !img.naturalWidth) {
+        img.addEventListener('load', function once(){
+          img.removeEventListener('load', once);
+          try {
+            const url = coverCropToSquare(img, 300);
+            if (url) { img.src = url; img.dataset.squared = '1'; }
+          } catch(e){}
+        });
+      } else {
+        try {
+          const url = coverCropToSquare(img, 300);
+          if (url) { img.src = url; img.dataset.squared = '1'; }
+        } catch(e){}
+      }
+    });
+  }
+
+  // Run after our product rendering function (which we added earlier) finishes.
+  document.addEventListener('DOMContentLoaded', function(){
+    setTimeout(squareAll, 60);
+  });
+  // Also run on resize in case Splide nudges images
+  window.addEventListener('resize', function(){ setTimeout(squareAll, 60); });
+})();
+</script>
+
 </body></html>
