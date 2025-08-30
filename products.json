@@ -19,7 +19,10 @@
     "shortDescription": "Lightweight non-greasy face primer keeps makeup fresh all day.",
     "descriptionHTML": "<p>Lightweight non greesy face Primer, Makeup Fresh &amp; flawless all day long</p>",
     "inStock": true,
-    "sku": "PRM001"
+    "sku": "PRM001",
+    "created_at": "2025-06-30T17:22:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-face-primer"
   },
   {
     "id": "PRM002",
@@ -41,7 +44,10 @@
     "shortDescription": "Long wear & lightweight face primer keeps makeup fresh all day.",
     "descriptionHTML": "<p>Long wear &amp; lightweight face primer, makeup fresh &amp; flawless all day long</p>",
     "inStock": true,
-    "sku": "PRM002"
+    "sku": "PRM002",
+    "created_at": "2025-07-02T16:21:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-long-wear-face-primer"
   },
   {
     "id": "LIP002",
@@ -64,7 +70,10 @@
     "shortDescription": "Velvety matte lipstick set for soft finish and all-day wear.",
     "descriptionHTML": "<p>Velvety Matte Lipstick with soft finish and All day Wear</p>",
     "inStock": true,
-    "sku": "LIP002"
+    "sku": "LIP002",
+    "created_at": "2025-07-05T22:33:00Z",
+    "badges": [],
+    "url": "product.html?slug=art-skin-velvet-lipstick-6-pcs"
   },
   {
     "id": "FND002",
@@ -86,7 +95,10 @@
     "shortDescription": "Flawless Coverage, a lightweight feel, a natural, long last finishing.",
     "descriptionHTML": "<p>Flawless Coverage, a lightweight feel, a natural, long last finishing.</p>",
     "inStock": true,
-    "sku": "FND002"
+    "sku": "FND002",
+    "created_at": "2025-07-08T18:13:00Z",
+    "badges": [],
+    "url": "product.html?slug=roseberry-foundation-concealer-stick"
   },
   {
     "id": "PRM003",
@@ -108,7 +120,10 @@
     "shortDescription": "Silky-smooth, water-based primer that hydrates without cakiness.",
     "descriptionHTML": "<p>Silky-smooth, water-based moisturizing face primer that hydrates skin without cakiness or powder residue.</p>",
     "inStock": true,
-    "sku": "PRM003"
+    "sku": "PRM003",
+    "created_at": "2025-07-10T22:08:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-water-moisturizing-makeup-face-primer"
   },
   {
     "id": "FIX001",
@@ -129,7 +144,10 @@
     "shortDescription": "24 Hrs Makeup fresh, Matte finish & long lasting with a lightweight hydrating fixer",
     "descriptionHTML": "<p>24 Hrs Makeup fresh, Matte finish &amp; long lasting with a lightweight hydrating fixer</p>",
     "inStock": true,
-    "sku": "FIX001"
+    "sku": "FIX001",
+    "created_at": "2025-07-12T19:10:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-makeup-fixer"
   },
   {
     "id": "FND003",
@@ -151,7 +169,10 @@
     "shortDescription": "Hydrates, evens tone, and leaves a radiant finish.",
     "descriptionHTML": "<p>A skin-nourishing liquid foundation that hydrates, evens tone, and delivers a radiant, natural finish.</p>",
     "inStock": true,
-    "sku": "FND003"
+    "sku": "FND003",
+    "created_at": "2025-07-15T16:18:00Z",
+    "badges": [],
+    "url": "product.html?slug=sk-forever-skin-nourishing-liquid-foundation"
   },
   {
     "id": "FIX002",
@@ -172,7 +193,10 @@
     "shortDescription": "Long Lasting Setting Spray that locks in makeup for a flawless, fresh look all day",
     "descriptionHTML": "<p>Long Lasting Setting Spray that locks in makeup for a flawless, fresh look all day</p>",
     "inStock": true,
-    "sku": "FIX002"
+    "sku": "FIX002",
+    "created_at": "2025-07-18T20:18:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-makeup-setting-spray"
   },
   {
     "id": "LIP003",
@@ -194,7 +218,10 @@
     "shortDescription": "A richly pigmented kiss-proof lipstick that glides on smoothly for bold, long-lasting color",
     "descriptionHTML": "<p>A richly pigmented kiss-proof lipstick that glides on smoothly for bold, long-lasting color</p>",
     "inStock": true,
-    "sku": "LIP003"
+    "sku": "LIP003",
+    "created_at": "2025-07-20T12:20:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-kiss-lipstick"
   },
   {
     "id": "SPG001",
@@ -215,52 +242,84 @@
     "shortDescription": "Dry & Wet Dual Use & applying makeup products like foundation and powder, offering a soft texture for blending and achieving a seamless finish.",
     "descriptionHTML": "<p>Dry &amp; Wet Dual Use &amp; applying makeup products like foundation and powder, offering a soft texture for blending and achieving a seamless finish.</p>",
     "inStock": true,
-    "sku": "SPG001"
+    "sku": "SPG001",
+    "created_at": "2025-07-22T23:57:00Z",
+    "badges": [],
+    "url": "product.html?slug=halloween-makeup-finger-sponge-puff"
   },
   {
     "id": "CON001",
     "name": "Roseberry Concealer",
     "slug": "roseberry-concealer",
-    "images": ["/assets/img/products/IMG-20250820-WA0178.jpg"],
+    "images": [
+      "/assets/img/products/IMG-20250820-WA0178.jpg"
+    ],
     "price": 850,
     "currency": "PKR",
-    "categories": ["makeup", "contour-concealer"],
+    "categories": [
+      "makeup",
+      "contour-concealer"
+    ],
     "brand": "Roseberry",
-    "tags": ["makeup"],
+    "tags": [
+      "makeup"
+    ],
     "shortDescription": "Roseberry 12-Hours full coverage concealer, 3 colors available",
     "descriptionHTML": "<p>Roseberry 12-Hours full coverage concealer 3 colors available</p>",
     "inStock": true,
-    "sku": "CON001"
+    "sku": "CON001",
+    "created_at": "2025-07-25T15:34:00Z",
+    "badges": [],
+    "url": "product.html?slug=roseberry-concealer"
   },
   {
     "id": "CPD001",
     "name": "Sheglam Compact Powder",
     "slug": "sheglam-compact-powder",
-    "images": ["/assets/img/products/IMG-20250820-WA0211.jpg"],
+    "images": [
+      "/assets/img/products/IMG-20250820-WA0211.jpg"
+    ],
     "price": 1450,
     "currency": "PKR",
-    "categories": ["makeup", "face-powder"],
+    "categories": [
+      "makeup",
+      "face-powder"
+    ],
     "brand": "Sheglam",
-    "tags": ["makeup"],
+    "tags": [
+      "makeup"
+    ],
     "shortDescription": "Compact powder provides a smooth, flawless finish, controlling shine and setting makeup for a fresh, matte look all day.",
     "descriptionHTML": "<p>Compact powder provides a smooth, flawless finish, controlling shine and setting makeup for a fresh, matte look all day.</p>",
     "inStock": true,
-    "sku": "CPD001"
+    "sku": "CPD001",
+    "created_at": "2025-07-27T16:57:00Z",
+    "badges": [],
+    "url": "product.html?slug=sheglam-compact-powder"
   },
   {
     "id": "LIP004",
     "name": "RBORY Mate Lipgloss",
     "slug": "rbory-mate-lip-gloss",
-    "images": ["/assets/img/products/IMG-20250820-WA0177.jpg"],
+    "images": [
+      "/assets/img/products/IMG-20250820-WA0177.jpg"
+    ],
     "price": 599,
     "currency": "PKR",
-    "categories": ["makeup"],
+    "categories": [
+      "makeup"
+    ],
     "brand": "RBORY",
-    "tags": ["makeup"],
+    "tags": [
+      "makeup"
+    ],
     "shortDescription": "RBORY Mate Lip Gloss offers a luscious, matte finish with 16 vibrant colors.",
     "descriptionHTML": "<p>RBORY Mate Lip Gloss offers a luscious, matte finish with vibrant 16 colors available</p>",
     "inStock": true,
-    "sku": "LIP004"
+    "sku": "LIP004",
+    "created_at": "2025-07-30T23:30:00Z",
+    "badges": [],
+    "url": "product.html?slug=rbory-mate-lip-gloss"
   },
   {
     "id": "KIT001",
@@ -284,7 +343,10 @@
     "shortDescription": "Complete makeup kit with eyeshadow, blush, concealer, lipsticks, lip glosses, and liquid blush.",
     "descriptionHTML": "<p>Roseberry Branded Makeup kit \"Eyeshadow Palette\", \"Blush highlighter palette\", \"Concealer\", \"3 lipsticks\", \"3 lipgloss\",\"1 liquid blush\" available in makeup kit</p>",
     "inStock": true,
-    "sku": "KIT001"
+    "sku": "KIT001",
+    "created_at": "2025-08-01T18:12:00Z",
+    "badges": [],
+    "url": "product.html?slug=roseberry-makeup-kit"
   },
   {
     "id": "LIP005",
@@ -297,13 +359,20 @@
     ],
     "price": 550,
     "currency": "PKR",
-    "categories": ["makeup"],
+    "categories": [
+      "makeup"
+    ],
     "brand": "Rhode",
-    "tags": ["makeup"],
+    "tags": [
+      "makeup"
+    ],
     "shortDescription": "Rhode Lipgloss 8 different colors available",
     "descriptionHTML": "<p>Rhode Lipgloss 8 different colors available</p>",
     "inStock": true,
-    "sku": "LIP005"
+    "sku": "LIP005",
+    "created_at": "2025-08-04T15:07:00Z",
+    "badges": [],
+    "url": "product.html?slug=rhode-lipgloss"
   },
   {
     "id": "SKN001",
@@ -326,7 +395,10 @@
     "shortDescription": "Nourishing whitening serum brightens skin, reduces dark spots, and evens tone.",
     "descriptionHTML": "<p>Nourishing and smoothing whitening serum for brightening skin, eliminating dark spots, and evening out skin tone, suitable for day and night use, with natural ingredients.</p>",
     "inStock": true,
-    "sku": "SKN001"
+    "sku": "SKN001",
+    "created_at": "2025-08-07T12:05:00Z",
+    "badges": [],
+    "url": "product.html?slug=silkfull-face-serum"
   },
   {
     "id": "SKN002",
@@ -348,7 +420,10 @@
     "shortDescription": "Niacinamide face wash gently cleanses and brightens skin, reducing hyperpigmentation and improving skin complexion.",
     "descriptionHTML": "<p>Niacinamide face wash gently cleanses and brightens skin, reducing hyperpigmentation and improving skin complexion.</p>",
     "inStock": true,
-    "sku": "SKN002"
+    "sku": "SKN002",
+    "created_at": "2025-08-09T23:14:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-niacinamide-face-wash"
   },
   {
     "id": "SKN003",
@@ -370,7 +445,10 @@
     "shortDescription": "Gently cleansing face wash infused with Vitamin C and E to brighten, hydrate, and protect the skin for a radiant glow.",
     "descriptionHTML": "<p>Gently cleansing face wash infused with Vitamin C and E to brighten, hydrate, and protect the skin for a radiant glow.</p>",
     "inStock": true,
-    "sku": "SKN003"
+    "sku": "SKN003",
+    "created_at": "2025-08-12T13:24:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-vitamin-c-e-face-wash"
   },
   {
     "id": "SKN004",
@@ -392,7 +470,10 @@
     "shortDescription": "80-piece pack of organic cotton pads for makeup removal, skincare, and gentle cleansing.",
     "descriptionHTML": "<p>80-piece pack of organic cotton pads, ideal for makeup removal, skincare applications, and gentle cleansing.</p>",
     "inStock": true,
-    "sku": "SKN004"
+    "sku": "SKN004",
+    "created_at": "2025-08-14T14:49:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-cotton-pads"
   },
   {
     "id": "MSC001",
@@ -414,7 +495,10 @@
     "shortDescription": "One step extreme extension mascara and lash tint effect with curved curling brush.",
     "descriptionHTML": "<p>One step extreme extension mascara &amp; lash tint effect available with curved curling brush</p>",
     "inStock": true,
-    "sku": "MSC001"
+    "sku": "MSC001",
+    "created_at": "2025-08-16T22:19:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-extension-mascara"
   },
   {
     "id": "LIP006",
@@ -435,7 +519,10 @@
     "shortDescription": "Vibrant, blendable lip and cheek tint 4 colours available.",
     "descriptionHTML": "<p>Vibrant, blendable lip and cheek tint 4 colours available</p>",
     "inStock": true,
-    "sku": "LIP006"
+    "sku": "LIP006",
+    "created_at": "2025-08-19T12:10:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-lip-cheek-tint"
   },
   {
     "id": "SKN005",
@@ -458,7 +545,10 @@
     "shortDescription": "Natural snail slime mask smooths and firms hips and thighs for all skin types.",
     "descriptionHTML": "<p>Elfinz Lift &amp; Firm Booty Mask with natural snail slime smooths &amp; firms hips and thighs, reducing fatty skin appearance, suitable for all skin types.</p>",
     "inStock": true,
-    "sku": "SKN005"
+    "sku": "SKN005",
+    "created_at": "2025-08-21T18:17:00Z",
+    "badges": [],
+    "url": "product.html?slug=elfinz-lift-firm-booty-mask"
   },
   {
     "id": "SKN006",
@@ -481,7 +571,10 @@
     "shortDescription": "Snail slime cream firms and rejuvenates delicate neck and decollete skin.",
     "descriptionHTML": "<p>Elfinz Neck &amp; Decollete Firming Cream with natural snail slime smooths fine lines and wrinkles, firming and rejuvenating the delicate skin.</p>",
     "inStock": true,
-    "sku": "SKN006"
+    "sku": "SKN006",
+    "created_at": "2025-08-24T20:05:00Z",
+    "badges": [],
+    "url": "product.html?slug=elfinz-neck-decollete-firming-cream"
   },
   {
     "id": "SKN007",
@@ -503,7 +596,10 @@
     "shortDescription": "2-in-1 lip mask and scrub providing 24-hour hydration while gently exfoliating and nourishing lips.",
     "descriptionHTML": "<p>2-in-1 pure glow lip mask &amp; scrub providing 24-hour hydration, gently exfoliating and nourishing lips for a soft feel.</p>",
     "inStock": true,
-    "sku": "SKN007"
+    "sku": "SKN007",
+    "created_at": "2025-08-27T15:58:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-lip-scrub-mask"
   },
   {
     "id": "HGL001",
@@ -527,6 +623,9 @@
     "shortDescription": "Bouncy water-based gel stick delivers long-lasting, highly pigmented shine for a natural wet-look finish.",
     "descriptionHTML": "<p>OG jelly highlighter stick is a bouncy, water-based gel stick that delivers a long-lasting, highly pigmented shine for a natural, wet-look finish.</p>",
     "inStock": true,
-    "sku": "HGL001"
+    "sku": "HGL001",
+    "created_at": "2025-08-29T15:02:00Z",
+    "badges": [],
+    "url": "product.html?slug=og-aqua-jelly-highlighter-stick"
   }
 ]
