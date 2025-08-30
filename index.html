@@ -5744,4 +5744,153 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
   })();
   </script>
 
+
+<script>
+(function () {
+  function formatPKR(n) {
+    try {
+      const s = Number(n||0).toLocaleString('en-PK');
+      return 'Rs ' + s;
+    } catch(e) {
+      return 'Rs ' + (n||0);
+    }
+  }
+
+  function pickTemplate() {
+    // Prefer a non-shimmer product tile that already exists on the page
+    const existing = document.querySelector('li.entry.loop-entry.product:not(.shimmer)');
+    if (existing) return existing;
+    // Fallback: try a splide slide product
+    const fallback = document.querySelector('li.splide__slide.entry.loop-entry.product');
+    if (fallback) return fallback;
+    return null;
+  }
+
+  async function loadLatestProducts() {
+    const list = document.getElementById('splide05-list');
+    if (!list) return;
+
+    // Try to find a product tile to clone so CSS/DOM stays IDENTICAL
+    const templateLi = pickTemplate();
+    if (!templateLi) return;
+
+    let data = [];
+    try {
+      const res = await fetch('products.json', { cache: 'no-store' });
+      data = await res.json();
+    } catch(e) {
+      console.error('Failed to load products.json', e);
+      return;
+    }
+
+    // Clear existing generated children but keep UL itself
+    list.innerHTML = '';
+
+    const latest = data.slice(0, 12);
+    latest.forEach((p, idx) => {
+      const li = templateLi.cloneNode(true);
+
+      // ensure it's visible and not a shimmer
+      li.classList.remove('shimmer');
+      li.removeAttribute('id'); // avoid duplicate slide IDs
+      li.style.removeProperty('width'); // let Splide/CSS compute
+
+      // Thumbnail + link
+      const thumbLink = li.querySelector('.product-thumbnail a[href]') || li.querySelector('a.woocommerce-LoopProduct-link, a.woocommerce-loop-product__link');
+      if (thumbLink) thumbLink.href = p.url || '#';
+
+      const img = li.querySelector('.product-thumbnail img') || li.querySelector('img');
+      if (img) {
+        if (p.images && p.images.length) img.src = p.images[0];
+        img.alt = p.name || p.title || '';
+        img.removeAttribute('srcset'); // prevent wrong sizes from demo
+        img.removeAttribute('sizes');
+      }
+
+      // Title
+      const titleA = li.querySelector('.woocommerce-loop-product__title a') || li.querySelector('.woocommerce-loop-product__title_link') || li.querySelector('h2 a, h3 a');
+      const titleH = li.querySelector('.woocommerce-loop-product__title') || li.querySelector('h2,h3');
+      if (titleA) {
+        titleA.textContent = p.name || p.title || '';
+        titleA.href = p.url || '#';
+      }
+      if (titleH && !titleA) {
+        titleH.textContent = p.name || p.title || '';
+      }
+
+      // Prices
+      const priceWrap = li.querySelector('span.price') || li.querySelector('.price');
+      if (priceWrap) {
+        // remove existing text nodes
+        // Update current price in <ins>
+        let ins = priceWrap.querySelector('ins .woocommerce-Price-amount bdi') || priceWrap.querySelector('ins bdi') || priceWrap.querySelector('ins');
+        if (!ins) {
+          // create if missing
+          const insEl = document.createElement('ins');
+          const spanAmt = document.createElement('span'); spanAmt.className = 'woocommerce-Price-amount amount';
+          const bdi = document.createElement('bdi');
+          insEl.appendChild(spanAmt); spanAmt.appendChild(bdi);
+          priceWrap.appendChild(insEl);
+          ins = bdi;
+        }
+        ins.textContent = formatPKR(p.price);
+
+        // Handle compare_at_price (strike-through) + onsale badge
+        const hasCompare = typeof p.compare_at_price === 'number' && p.compare_at_price > (p.price || 0);
+        // del
+        let delBdi = priceWrap.querySelector('del .woocommerce-Price-amount bdi') || priceWrap.querySelector('del bdi');
+        let delEl = priceWrap.querySelector('del');
+        if (hasCompare) {
+          if (!delEl) {
+            delEl = document.createElement('del');
+            const spanAmt = document.createElement('span'); spanAmt.className = 'woocommerce-Price-amount amount';
+            delBdi = document.createElement('bdi');
+            priceWrap.insertBefore(delEl, priceWrap.firstChild);
+            delEl.appendChild(spanAmt); spanAmt.appendChild(delBdi);
+          }
+          delBdi.textContent = formatPKR(p.compare_at_price);
+        } else if (delEl) {
+          delEl.remove();
+        }
+
+        // Sale badge
+        const badge = li.querySelector('.product-onsale .onsale') || li.querySelector('.product-onsale');
+        if (hasCompare) {
+          const pct = Math.max(0, Math.round((1 - (p.price||0)/(p.compare_at_price||1)) * 100));
+          let onsaleWrap = li.querySelector('.product-onsale');
+          if (!onsaleWrap) {
+            const wrap = document.createElement('div');
+            wrap.className = 'product-onsale';
+            const span = document.createElement('span');
+            span.className = 'onsale';
+            wrap.appendChild(span);
+            const thumb = li.querySelector('.product-thumbnail') || li;
+            thumb.prepend(wrap);
+            onsaleWrap = wrap;
+          }
+          const span = onsaleWrap.querySelector('.onsale');
+          if (span) span.textContent = '-' + pct + '%';
+        } else if (badge && badge.closest('.product-onsale')) {
+          badge.closest('.product-onsale').remove();
+        }
+      }
+
+      // ensure splide class
+      if (!li.classList.contains('splide__slide')) li.classList.add('splide__slide');
+
+      list.appendChild(li);
+    });
+
+    // If Splide is present on the page, try to refresh
+    try {
+      if (list.closest('.splide') && window.splide05) {
+        window.splide05.refresh();
+      }
+    } catch(e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', loadLatestProducts);
+})();
+</script>
+
 </body></html>
