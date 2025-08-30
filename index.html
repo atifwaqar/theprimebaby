@@ -5631,7 +5631,7 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
     class="products content-wrap product-archive grid-cols grid--6-col-desktop grid--3-col-tablet grid--2-col"
     data-products-grid
     data-template="product-card-template"
-    data-source="assets/products.json"
+    data-source="products.json"
     data-limit="12"
     data-filter="latest">
   </ul>
@@ -5731,7 +5731,7 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
     async function initProductsGrid() {
       const grids = qsa('[data-products-grid]');
       if (!grids.length) return;
-      const defaultSrc = 'assets/products.json';
+      const defaultSrc = 'products.json';
       const srcs = new Set(grids.map(g => g.getAttribute('data-source') || defaultSrc));
       const sourceMap = {};
       for (const src of srcs) {
