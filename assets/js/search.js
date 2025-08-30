@@ -1,7 +1,6 @@
 
 (function(){
   function hookSearch(){
-    // Try site-wide search input
     const inputs = Array.from(document.querySelectorAll('input[type="search"], input[name="s"], input[name="q"]'));
     inputs.forEach(inp => {
       const form = inp.form;
