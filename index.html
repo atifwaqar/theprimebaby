@@ -1761,7 +1761,7 @@ Gray Color
 				<div class="elementor-element elementor-element-c44fe9f elementor-widget elementor-widget-tmcore-products" data-id="c44fe9f" data-element_type="widget" data-widget_type="tmcore-products.default">
 				<div class="elementor-widget-container">
 					<div class="woocommerce columns-6 "><div class="woocommerce-carousel splide is-overflow is-initialized splide--slide splide--ltr splide--draggable is-active" data-settings="{&quot;dimensions&quot;:1,&quot;navigation&quot;:&quot;arrows&quot;,&quot;autoplayHoverPause&quot;:true,&quot;autoplay&quot;:false,&quot;autoplay_speed&quot;:null,&quot;items&quot;:&quot;6&quot;,&quot;items_laptop&quot;:&quot;5&quot;,&quot;items_tablet&quot;:&quot;4&quot;,&quot;items_mobile&quot;:&quot;3&quot;,&quot;loop&quot;:false,&quot;gap&quot;:22,&quot;gap_laptop&quot;:20,&quot;gap_tablet&quot;:15,&quot;gap_mobile&quot;:15,&quot;product_layout&quot;:&quot;grid&quot;}" id="splide05" role="region" aria-roledescription="carousel"><div class="splide__arrows splide__arrows--ltr"><button class="splide__arrow splide__arrow--prev" type="button" aria-label="Previous slide" aria-controls="splide05-track"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg></button><button class="splide__arrow splide__arrow--next" type="button" aria-label="Next slide" aria-controls="splide05-track"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg></button></div><div class="splide__track splide__track--slide splide__track--ltr splide__track--draggable" id="splide05-track" style="padding-left: 0px; padding-right: 0px;" aria-live="polite" aria-atomic="true"><ul class="products content-wrap product-archive grid-ss-col-2 grid-sm-col-3 grid-md-col-4 grid-lg-col-6 woo-archive-action-visible woo-archive-btn-button align-buttons-bottom woo-archive-image-hover-fade splide__list" id="splide05-list" role="presentation" style="transform: translateX(0px);">
-					<!--TODO: Here I'd like to populate products from my products.json. the goal is to display products exactly the way this 1 product is displayed below-->
+					<!--TODO: Today there is a JS code that gets data from products.json and then fills that data in following li. this seems a very crappy way of populating the data. where the html is loaded with following li and then is changed. I want to improve this part, where I can safely delete the following li. and when My prodcuts.json data is available in the page it is populated here automatically. keeping the style pixel perfect as following li-->
 					<li class="entry content-bg loop-entry product type-product post-145 status-publish first instock product_cat-fashion product_cat-mens-clothes product_cat-our-store product_cat-face-wash product_cat-sneakers-shoes product_cat-sunglasses product_cat-womens-clothes has-post-thumbnail sale shipping-taxable purchasable product-type-variable has-default-attributes cart-button-1 action-style-default product-hover-style1 image-hover-icon hover-right splide__slide is-active is-visible" id="splide05-slide01" role="group" aria-roledescription="slide" aria-label="1 of 8" style="margin-right: 20px; width: calc(20% - 16px);">
 	<div class="product-thumbnail"><a href="https://demos.codezeel.com/wordpress/WCM05/WCM050122/default/product/adro-men-print-regular-fit-hoodie-for-men/" class="woocommerce-loop-image-link woocommerce-LoopProduct-link woocommerce-loop-product__link product-has-hover-image" aria-label="ADRO Men Print Regular Fit Hoodie For Men">
 	<div class="product-onsale">
@@ -5967,5 +5967,167 @@ var searchAdvancedConfig = {"ajaxURL":"https:\/\/demos.codezeel.com\/wordpress\/
   window.addEventListener('resize', function(){ setTimeout(squareAll, 60); });
 })();
 </script>
+
+
+<!-- BEGIN: Latest Products auto-population (safe, non-destructive) -->
+<script>
+(function () {
+  const LIST_ID = 'splide05-list';      // UL/OL element for "Latest Products" slides
+  const SPLIDE_ROOT_ID = 'splide05';    // Splide root for "Latest Products"
+  const JSON_URL = 'products.json';     // Adjust path if needed
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function setText(root, sel, text) {
+    const el = $(sel, root);
+    if (el && typeof text !== 'undefined' && text !== null) el.textContent = String(text);
+  }
+  function setAttr(root, sel, attr, val) {
+    const el = $(sel, root);
+    if (el && typeof val !== 'undefined' && val !== null) el.setAttribute(attr, String(val));
+  }
+
+  async function populateLatest() {
+    const list = document.getElementById(LIST_ID);
+    if (!list) { console.warn('[LatestProducts] List not found:', LIST_ID); return; }
+
+    // Capture a pixel-perfect template if a slide exists
+    let templateSlide = null;
+    if (list.firstElementChild) {
+      templateSlide = list.firstElementChild.cloneNode(true);
+    }
+
+    // Clear existing slides (we don't rely on any hard-coded <li>)
+    while (list.firstChild) list.removeChild(list.firstChild);
+
+    // Load products.json
+    let products = [];
+    try {
+      const res = await fetch(JSON_URL, { cache: 'no-store' });
+      products = await res.json();
+      if (!Array.isArray(products)) {
+        console.warn('[LatestProducts] products.json did not return an array.'); 
+        return;
+      }
+    } catch (e) {
+      console.warn('[LatestProducts] Failed to load products.json', e);
+      return;
+    }
+
+    // Pick latest (assumes products are already sorted; otherwise sort by created_at desc if present)
+    try {
+      products = products.slice().sort((a,b) => {
+        if (a.created_at && b.created_at) { 
+          return new Date(b.created_at) - new Date(a.created_at);
+        }
+        return 0;
+      });
+    } catch(e) {
+      // ignore sorting issues
+    }
+
+    const take = Math.min(products.length, 12);
+    const frag = document.createDocumentFragment();
+
+    for (let i = 0; i < take; i++) {
+      const p = products[i] || {};
+      const li = document.createElement('li');
+      li.className = 'splide__slide';
+
+      let cardRoot;
+
+      if (templateSlide) {
+        // Clone the template and try to map common Woo/Elementor selectors safely
+        cardRoot = templateSlide.cloneNode(true);
+
+        // Title
+        setText(cardRoot, '.woocommerce-loop-product__title');
+        setText(cardRoot, '.product-title');
+        setText(cardRoot, '.cz-product-title');
+        setText(cardRoot, '.elementor-heading-title');
+        // We'll apply to the first that exists:
+        const titleNode = cardRoot.querySelector('.woocommerce-loop-product__title, .product-title, .cz-product-title, .elementor-heading-title');
+        if (titleNode) titleNode.textContent = p.title || p.name || titleNode.textContent;
+
+        // Image
+        const img = cardRoot.querySelector('img');
+        if (img && p.images && p.images.length) {
+          img.src = p.images[0];
+          img.srcset = ''; // avoid blurry/downscale from old srcset
+          img.loading = 'lazy';
+          if (p.title) img.alt = p.title;
+        }
+
+        // Link (prefers product page url if provided)
+        const link = cardRoot.querySelector('a[href]');
+        if (link && p.url) {
+          link.href = p.url;
+        }
+
+        // Price (current)
+        const currentPriceNode = cardRoot.querySelector('.price .amount, .cz-price .amount, .product-price .amount, .woocommerce-Price-amount');
+        if (currentPriceNode && (typeof p.price !== 'undefined')) {
+          currentPriceNode.textContent = (p.currency ? p.currency + ' ' : '') + p.price;
+        }
+
+        // Compare at (strike-through)
+        const compareNode = cardRoot.querySelector('del .amount, .price del .amount, .old-price, .price .was');
+        if (compareNode && (typeof p.compare_at_price !== 'undefined') && p.compare_at_price) {
+          compareNode.textContent = (p.currency ? p.currency + ' ' : '') + p.compare_at_price;
+        }
+
+      } else {
+        // Fallback minimal markup (in case there was no template slide left in HTML).
+        // This preserves Splide structure and avoids breaking layout entirely.
+        cardRoot = document.createElement('div');
+        cardRoot.className = 'cz-fallback-card';
+        cardRoot.innerHTML = [
+          '<a class="cz-fallback-link" target="_self">',
+          '  <div class="cz-fallback-imgwrap"><img class="cz-fallback-img" alt=""></div>',
+          '  <h3 class="cz-fallback-title"></h3>',
+          '  <div class="cz-fallback-price"><span class="amount"></span></div>',
+          '</a>'
+        ].join('');
+
+        const a = cardRoot.querySelector('a.cz-fallback-link');
+        if (a && p.url) a.href = p.url;
+
+        const img = cardRoot.querySelector('img.cz-fallback-img');
+        if (img && p.images && p.images.length) {
+          img.src = p.images[0];
+          img.loading = 'lazy';
+          img.alt = p.title || '';
+        }
+
+        const title = cardRoot.querySelector('.cz-fallback-title');
+        if (title) title.textContent = p.title || p.name || '';
+
+        const amt = cardRoot.querySelector('.cz-fallback-price .amount');
+        if (amt && (typeof p.price !== 'undefined')) {
+          amt.textContent = (p.currency ? p.currency + ' ' : '') + p.price;
+        }
+      }
+
+      li.innerHTML = '';
+      li.appendChild(cardRoot);
+      frag.appendChild(li);
+    }
+
+    list.appendChild(frag);
+
+    // Refresh Splide if already initialized
+    const root = document.getElementById(SPLIDE_ROOT_ID);
+    try {
+      if (root && root.splide && typeof root.splide.refresh === 'function') {
+        root.splide.refresh();
+      }
+    } catch (e) {
+      // If not initialized yet, ignore; Splide init elsewhere will pick up the new slides.
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', populateLatest);
+})();
+</script>
+<!-- END: Latest Products auto-population -->
 
 </body></html>
